@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoreLife Session Confirmed - Nigerland</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <div class="container" style="padding: 5rem 0; text-align: center;">
+        <div class="success-message">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3 id="statusMessage">Verifying Your Payment...</h3>
+            <p id="statusDescription">Please wait while we confirm your payment.</p>
+            <div id="paymentDetails" style="display: none;">
+                <p><strong>Reference:</strong> <span id="referenceNumber"></span></p>
+                <p><strong>Session Type:</strong> <span id="sessionType"></span></p>
+                <p><strong>Amount Paid:</strong> <span id="amountPaid"></span></p>
+            </div>
+            <a href="#home" class="btn" id="successButton" style="display: none;">Return to Home</a>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const reference = urlParams.get('reference');
+        const method = urlParams.get('method');
+
+        if (method === 'bank_transfer') {
+            // Bank transfer - no verification needed
+            document.getElementById('statusMessage').textContent = 'Application Submitted Successfully!';
+            document.getElementById('statusDescription').textContent = 'Thank you for your MoreLife session application. Please complete your bank transfer and send proof of payment to morelife@nigerlandconsult.com';
+            document.getElementById('referenceNumber').textContent = reference;
+            document.getElementById('paymentDetails').style.display = 'block';
+            document.getElementById('successButton').style.display = 'inline-block';
+        } else {
+            // Online payment - verify with PayStack
+            verifyPayment(reference);
+        }
+
+        async function verifyPayment(reference) {
+            try {
+                const response = await fetch(`Api/verify_morelife_payment.php?reference=${reference}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('statusMessage').textContent = 'Payment Successful!';
+                    document.getElementById('statusDescription').textContent = 'Your MoreLife session has been confirmed. Our team will contact you within 48 hours to schedule your sessions.';
+                    document.getElementById('referenceNumber').textContent = reference;
+                    document.getElementById('sessionType').textContent = 'MoreLife Session';
+                    document.getElementById('amountPaid').textContent = '₦' + (data.data.amount / 100).toLocaleString();
+                    document.getElementById('paymentDetails').style.display = 'block';
+                } else {
+                    document.getElementById('statusMessage').textContent = 'Payment Verification Pending';
+                    document.getElementById('statusDescription').textContent = 'We are still verifying your payment. This may take a few minutes. You will receive a confirmation email once verified.';
+                }
+                
+                document.getElementById('successButton').style.display = 'inline-block';
+                
+            } catch (error) {
+                console.error('Verification error:', error);
+                document.getElementById('statusMessage').textContent = 'Payment Received';
+                document.getElementById('statusDescription').textContent = 'Thank you for your payment. Your session will be confirmed shortly.';
+                document.getElementById('successButton').style.display = 'inline-block';
+            }
+        }
+    </script>
+</body>
+</html>

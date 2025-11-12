@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Registration - Nigerland Consult Limited</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header .subtitle {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .training-info {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .training-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 25px;
+        }
+
+        .training-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #3498db;
+            transition: transform 0.3s ease;
+        }
+
+        .training-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .training-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .training-features {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        .training-features li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+            color: #555;
+        }
+
+        .training-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .training-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 15px 0;
+        }
+
+        .select-training-btn {
+            width: 100%;
+            padding: 12px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .select-training-btn:hover {
+            background: #2980b9;
+        }
+
+        .registration-section {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .registration-section.active {
+            display: block;
+        }
+
+        .selected-training-info {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            border-left: 4px solid #3498db;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+        }
+
+        .btn-back {
+            background: #95a5a6;
+            color: white;
+            max-width: 150px;
+        }
+
+        .btn-back:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+        }
+
+        .btn-register:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-register:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        @media (max-width: 768px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .training-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn-back {
+                max-width: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Professional Training Programs</h1>
+            <div class="subtitle">Enhance Your Skills with Expert-Led Training Sessions</div>
+        </div>
+
+        <div class="content">
+            <div class="training-info">
+                <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px;">Available Training Programs</h2>
+                <p style="text-align: center; color: #666; margin-bottom: 25px;">
+                    Choose from our comprehensive training programs designed to boost your professional skills and career advancement.
+                </p>
+
+                <div class="training-grid">
+                    <!-- Training programs will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Registration Form Section -->
+            <div class="registration-section" id="registrationSection">
+                <div class="selected-training-info" id="selectedTrainingInfo">
+                    <h3>Selected Training: <span id="selectedTrainingTitle"></span></h3>
+                    <p>Investment: <strong id="selectedTrainingPrice"></strong></p>
+                </div>
+
+                <h2>Training Registration Form</h2>
+                <form id="trainingForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="full_name">Full Name <span class="required">*</span></label>
+                            <input type="text" id="full_name" name="full_name" required placeholder="Enter your full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" name="email" required placeholder="Enter your email address">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="phone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone" name="phone" required placeholder="Enter your phone number">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profession">Profession <span class="required">*</span></label>
+                            <select id="profession" name="profession" required>
+                                <option value="">Select Profession</option>
+                                <option value="accountant">Accountant</option>
+                                <option value="finance-manager">Finance Manager</option>
+                                <option value="business-owner">Business Owner</option>
+                                <option value="consultant">Consultant</option>
+                                <option value="civil-servant">Civil Servant</option>
+                                <option value="student">Student</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="organization">Organization/Company</label>
+                            <input type="text" id="organization" name="organization" placeholder="Enter your organization name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="position">Position/Title</label>
+                            <input type="text" id="position" name="position" placeholder="Enter your position">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="experience">Years of Professional Experience</label>
+                        <select id="experience" name="experience">
+                            <option value="">Select Experience</option>
+                            <option value="0-2">0-2 years</option>
+                            <option value="3-5">3-5 years</option>
+                            <option value="6-10">6-10 years</option>
+                            <option value="10+">10+ years</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="expectations">Training Expectations</label>
+                        <textarea id="expectations" name="expectations" placeholder="What do you hope to achieve from this training?"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="special_requirements">Special Requirements</label>
+                        <textarea id="special_requirements" name="special_requirements" placeholder="Any special requirements or accommodations needed?"></textarea>
+                    </div>
+
+                    <div class="alert" id="alertMessage"></div>
+
+                    <div class="loading" id="loadingIndicator">
+                        <div class="spinner"></div>
+                        <p>Submitting your registration...</p>
+                    </div>
+
+                    <div class="actions">
+                        <button type="button" class="btn btn-back" onclick="goBackToTrainingSelection()">Back to Training</button>
+                        <button type="button" class="btn btn-register" id="registerButton" onclick="submitTrainingRegistration()" disabled>
+                            Reserve My Spot
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Training programs data
+        const trainingPrograms = {
+            'management': {
+                title: 'Management Training',
+                price: 75000,
+                features: [
+                    'Leadership Development',
+                    'Strategic Planning',
+                    'Project Management',
+                    'Team Building',
+                    'Change Management'
+                ]
+            },
+            'marketing': {
+                title: 'Marketing Training',
+                price: 65000,
+                features: [
+                    'Digital Marketing',
+                    'Brand Management',
+                    'Market Research',
+                    'Sales Techniques',
+                    'Customer Relationship'
+                ]
+            },
+            'business-admin': {
+                title: 'Business Administration',
+                price: 55000,
+                features: [
+                    'Office Management',
+                    'Business Communication',
+                    'Administrative Procedures',
+                    'Record Keeping',
+                    'Business Ethics'
+                ]
+            },
+            'computer': {
+                title: 'Computer Training',
+                price: 45000,
+                features: [
+                    'Basic Computer Skills',
+                    'Software Applications',
+                    'IT Fundamentals',
+                    'Digital Literacy',
+                    'Cybersecurity Basics'
+                ]
+            },
+            'public-health': {
+                title: 'Public Health',
+                price: 60000,
+                features: [
+                    'Health Education',
+                    'Community Health',
+                    'Disease Prevention',
+                    'Health Promotion',
+                    'Public Health Administration'
+                ]
+            },
+            'social-works': {
+                title: 'Social Works',
+                price: 50000,
+                features: [
+                    'Community Development',
+                    'Social Welfare',
+                    'Counseling Techniques',
+                    'Social Policy',
+                    'Human Rights Advocacy'
+                ]
+            },
+            'safety': {
+                title: 'Safety Training',
+                price: 55000,
+                features: [
+                    'Workplace Safety',
+                    'Risk Assessment',
+                    'Emergency Response',
+                    'Safety Regulations',
+                    'Accident Prevention'
+                ]
+            },
+            'security': {
+                title: 'Security Training',
+                price: 70000,
+                features: [
+                    'Security Management',
+                    'Surveillance Systems',
+                    'Access Control',
+                    'Crisis Management',
+                    'Security Protocols'
+                ]
+            },
+            'insurgency': {
+                title: 'Insurgency & Peace Building',
+                price: 80000,
+                features: [
+                    'Conflict Resolution',
+                    'Peace Building',
+                    'Counter-insurgency Strategies',
+                    'Community Resilience',
+                    'Rehabilitation Programs'
+                ]
+            },
+            'accountancy': {
+                title: 'Accountancy',
+                price: 85000,
+                features: [
+                    'Financial Accounting',
+                    'Tax Preparation',
+                    'Auditing Procedures',
+                    'Financial Reporting',
+                    'Accounting Software'
+                ]
+            },
+            'creativity': {
+                title: 'Creativity & Innovation',
+                price: 40000,
+                features: [
+                    'Innovative Thinking',
+                    'Problem Solving',
+                    'Design Thinking',
+                    'Creative Processes',
+                    'Idea Generation'
+                ]
+            },
+            'communication': {
+                title: 'Communication Skills',
+                price: 35000,
+                features: [
+                    'Public Speaking',
+                    'Business Writing',
+                    'Interpersonal Skills',
+                    'Presentation Skills',
+                    'Negotiation Techniques'
+                ]
+            }
+        };
+
+        let selectedTraining = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const programParam = urlParams.get('program');
+            
+            populateTrainingGrid();
+            
+            if (programParam && trainingPrograms[programParam]) {
+                selectTrainingByProgram(programParam);
+            }
+            
+            // Initialize form validation
+            const form = document.getElementById('trainingForm');
+            if (form) {
+                const inputs = form.querySelectorAll('input, select, textarea');
+                inputs.forEach(input => {
+                    input.addEventListener('input', validateForm);
+                    input.addEventListener('change', validateForm);
+                    input.addEventListener('blur', validateForm);
+                });
+            }
+            validateForm();
+        });
+
+        function populateTrainingGrid() {
+            const grid = document.querySelector('.training-grid');
+            grid.innerHTML = '';
+
+            Object.entries(trainingPrograms).forEach(([key, program]) => {
+                const card = document.createElement('div');
+                card.className = 'training-card';
+                card.innerHTML = `
+                    <h3>${program.title}</h3>
+                    <ul class="training-features">
+                        ${program.features.map(feature => `<li>${feature}</li>`).join('')}
+                    </ul>
+                    <div class="training-price">₦${program.price.toLocaleString()}</div>
+                    <button class="select-training-btn" onclick="selectTraining('${key}')">
+                        Select This Training
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function selectTraining(programKey) {
+            const program = trainingPrograms[programKey];
+            
+            selectedTraining = {
+                id: programKey,
+                title: program.title,
+                price: program.price
+            };
+            
+            // Update registration section
+            document.getElementById('selectedTrainingTitle').textContent = program.title;
+            document.getElementById('selectedTrainingPrice').textContent = '₦' + program.price.toLocaleString();
+            
+            // Show registration section
+            document.getElementById('registrationSection').classList.add('active');
+            
+            // Scroll to registration section
+            document.getElementById('registrationSection').scrollIntoView({ behavior: 'smooth' });
+            
+            validateForm();
+        }
+
+        function selectTrainingByProgram(programKey) {
+            selectTraining(programKey);
+        }
+
+        function goBackToTrainingSelection() {
+            document.getElementById('registrationSection').classList.remove('active');
+            selectedTraining = null;
+            document.getElementById('trainingForm').reset();
+            validateForm();
+        }
+
+        // Enhanced form validation
+        function validateForm() {
+            const form = document.getElementById('trainingForm');
+            const registerButton = document.getElementById('registerButton');
+            
+            if (!form || !registerButton) return false;
+            
+            const requiredFields = [
+                'full_name', 'email', 'phone', 'profession'
+            ];
+            
+            let allFieldsFilled = true;
+            
+            requiredFields.forEach(fieldName => {
+                const field = form.querySelector(`[name="${fieldName}"]`);
+                if (field && !field.value.trim()) {
+                    allFieldsFilled = false;
+                }
+                
+                // Email validation
+                if (fieldName === 'email' && field && field.value.trim()) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(field.value.trim())) {
+                        allFieldsFilled = false;
+                    }
+                }
+                
+                // Phone validation
+                if (fieldName === 'phone' && field && field.value.trim()) {
+                    const phoneRegex = /^[0-9+\-\s()]{10,}$/;
+                    if (!phoneRegex.test(field.value.trim())) {
+                        allFieldsFilled = false;
+                    }
+                }
+            });
+            
+            const isValid = allFieldsFilled && selectedTraining;
+            registerButton.disabled = !isValid;
+            
+            return isValid;
+        }
+
+        // Enhanced form submission
+        async function submitTrainingRegistration() {
+            console.log('Submit training registration called');
+            
+            if (!selectedTraining) {
+                showAlert('Please select a training program first.');
+                return;
+            }
+            
+            const isValid = validateForm();
+            console.log('Form validation result:', isValid);
+            
+            if (!isValid) {
+                showAlert('Please fill all required fields correctly.');
+                return;
+            }
+            
+            showLoading(true);
+            showAlert('', 'error');
+            
+            const formData = new FormData(document.getElementById('trainingForm'));
+            
+            const registrationData = {
+                full_name: formData.get('full_name'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                profession: formData.get('profession'),
+                organization: formData.get('organization') || '',
+                position: formData.get('position') || '',
+                experience: formData.get('experience') || '',
+                expectations: formData.get('expectations') || '',
+                special_requirements: formData.get('special_requirements') || '',
+                training_title: selectedTraining.title,
+                training_id: selectedTraining.id,
+                training_price: selectedTraining.price
+            };
+            
+            console.log('Registration data:', registrationData);
+            
+            try {
+                const response = await fetch('Api/submit_training_registration.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registrationData)
+                });
+                
+                const data = await response.json();
+                console.log('Registration response:', data);
+                
+                if (data.success) {
+                    showAlert('Registration submitted successfully! We will contact you with payment details.', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = `training-success.html?reference=${data.data.reference}`;
+                    }, 3000);
+                    
+                } else {
+                    throw new Error(data.message || 'Registration failed');
+                }
+                
+            } catch (error) {
+                console.error('Registration error:', error);
+                showAlert(`Registration failed: ${error.message}`);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Helper functions
+        function showAlert(message, type = 'error') {
+            const alert = document.getElementById('alertMessage');
+            if (!alert) return;
+            
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        function showLoading(show) {
+            const loading = document.getElementById('loadingIndicator');
+            const registerButton = document.getElementById('registerButton');
+            
+            if (loading) loading.style.display = show ? 'block' : 'none';
+            if (registerButton) registerButton.disabled = show;
+        }
+    </script>
+</body>
+</html>

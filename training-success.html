@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Registration Successful - Nigerland Consult Limited</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-container {
+            max-width: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .success-header {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 40px;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .success-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .success-content {
+            padding: 40px;
+        }
+
+        .success-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .detail-value {
+            color: #27ae60;
+            font-weight: 600;
+        }
+
+        .next-steps {
+            background: #e8f4f8;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: left;
+            border-left: 4px solid #3498db;
+        }
+
+        .next-steps h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .next-steps ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .next-steps li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .next-steps li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .contact-info {
+            background: #fff3cd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+
+        @media (max-width: 768px) {
+            .actions {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-header">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h1>Registration Successful!</h1>
+            <p>Thank you for registering for our training program</p>
+        </div>
+
+        <div class="success-content">
+            <h2>Your Training Registration is Confirmed</h2>
+            <p>We have received your registration details and will contact you shortly with payment information and program details.</p>
+
+            <div class="success-details" id="registrationDetails">
+                <div class="detail-item">
+                    <span class="detail-label">Reference Number:</span>
+                    <span class="detail-value" id="referenceNumber">Loading...</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Training Program:</span>
+                    <span class="detail-value" id="trainingProgram">Loading...</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Registration Date:</span>
+                    <span class="detail-value" id="registrationDate">Loading...</span>
+                </div>
+            </div>
+
+            <div class="next-steps">
+                <h3>What Happens Next?</h3>
+                <ul>
+                    <li>Our team will contact you within 24 hours</li>
+                    <li>You'll receive payment details and invoice</li>
+                    <li>Training schedule and materials will be provided</li>
+                    <li>Join our training community for updates</li>
+                </ul>
+            </div>
+
+            <div class="contact-info">
+                <h3>Need Immediate Assistance?</h3>
+                <p>Email: training@nigerlandconsult.com</p>
+                <p>Phone: 0803 3000 567</p>
+            </div>
+
+            <div class="actions">
+                <a href="index.html" class="btn btn-primary">Return to Home</a>
+                <a href="training-registration.html" class="btn btn-secondary">Register Another Training</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const reference = urlParams.get('reference');
+
+        // Update page content with reference
+        if (reference) {
+            document.getElementById('referenceNumber').textContent = reference;
+        }
+
+        // Set current date
+        document.getElementById('registrationDate').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        // Try to get training details from localStorage
+        try {
+            const trainingDetails = JSON.parse(localStorage.getItem('selectedTraining'));
+            if (trainingDetails) {
+                document.getElementById('trainingProgram').textContent = trainingDetails.title;
+            }
+        } catch (e) {
+            console.log('No training details in localStorage');
+        }
+
+        // Clear localStorage
+        localStorage.removeItem('selectedTraining');
+    </script>
+</body>
+</html>

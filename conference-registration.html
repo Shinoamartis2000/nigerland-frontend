@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Tax Conference - Nigerland Consult Limited</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: float 20s infinite linear;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-20px, -20px) rotate(360deg); }
+        }
+
+        .company-name {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        .header .conference-theme {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            font-weight: 300;
+        }
+
+        .header .date {
+            font-size: 1.4em;
+            opacity: 0.8;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #3498db;
+        }
+
+        .header .mode {
+            font-size: 1.2em;
+            opacity: 0.8;
+            font-weight: 300;
+        }
+
+        .urgency-banner {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            margin: 30px 40px 0 40px;
+            animation: pulse 2s infinite;
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .content {
+            padding: 50px 40px;
+        }
+
+        .countdown {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: #34495e;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+
+        .countdown-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            display: block;
+            color: #3498db;
+        }
+
+        .countdown-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+
+        .conference-description {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .conference-description h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 2.2em;
+            font-weight: 400;
+        }
+
+        .description-text {
+            font-size: 1.2em;
+            line-height: 1.8;
+            color: #555;
+            max-width: 900px;
+            margin: 0 auto 30px auto;
+            text-align: left;
+        }
+
+        .target-audience {
+            background: #e8f4f8;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+            border-left: 5px solid #3498db;
+        }
+
+        .target-audience h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: 400;
+        }
+
+        .audience-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .audience-item {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .audience-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .audience-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .audience-item h4 {
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+
+        .pricing-section {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 3px dashed #f39c12;
+            text-align: center;
+        }
+
+        .pricing-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            font-weight: 400;
+        }
+
+        .price-amount {
+            font-size: 4em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .price-includes {
+            text-align: left;
+            max-width: 500px;
+            margin: 30px auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .price-includes h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .price-includes ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .price-includes li {
+            padding: 10px 0;
+            border-bottom: 1px solid #ecf0f1;
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .price-includes li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .price-includes li:last-child {
+            border-bottom: none;
+        }
+
+        .price-note {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+
+        .conference-objectives {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 40px;
+            margin: 40px 0;
+        }
+
+        .conference-objectives h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: 400;
+        }
+
+        .objectives-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .objective-item {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left: 4px solid #3498db;
+        }
+
+        .objective-item h4 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .objective-item p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .action-section {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .action-section h2 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            font-weight: 400;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+
+        .btn {
+            padding: 20px 45px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            min-width: 250px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(231, 76, 60, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(52, 152, 219, 0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #2c3e50;
+            border: 2px solid #bdc3c7;
+        }
+
+        .btn-outline:hover {
+            background: #2c3e50;
+            color: white;
+            border-color: #2c3e50;
+        }
+
+        .btn-icon {
+            font-size: 1.3em;
+        }
+
+        .support-info {
+            text-align: center;
+            margin-top: 40px;
+            color: #7f8c8d;
+        }
+
+        .support-info a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .support-info a:hover {
+            text-decoration: underline;
+        }
+
+        .security-badges {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: #f8f9fa;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            color: #7f8c8d;
+            border: 1px solid #e9ecef;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 40px;
+            background: #2c3e50;
+            color: white;
+            margin-top: 50px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 40px 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.2em;
+            }
+            
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .urgency-banner {
+                margin: 20px 20px 0 20px;
+                padding: 15px;
+            }
+            
+            .countdown-timer {
+                gap: 10px;
+            }
+            
+            .countdown-item {
+                min-width: 70px;
+                padding: 15px;
+            }
+            
+            .countdown-number {
+                font-size: 2em;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .audience-grid,
+            .objectives-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .price-amount {
+                font-size: 3em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="company-name">NIGERLAND CONSULT LIMITED</div>
+            <h1 id="conf-title">ONLINE CONFERENCE ON UNDERSTANDING THE NEW TAX REFORMS AND THEIR IMPLICATIONS</h1>
+            <div class="conference-theme" id="conf-theme">Navigating Nigeria's Evolving Tax Landscape</div>
+            <div class="date" id="conf-date">DECEMBER 9 & 10, 2025</div>
+            <div class="mode">MODE: ONLINE</div>
+        </div>
+
+        <div class="urgency-banner">
+            <strong>📅 Limited Time Registration!</strong> - Secure your virtual seat for this crucial tax reform conference
+        </div>
+
+        <div class="content">
+            <div class="countdown">
+                <h3>Conference Starts In:</h3>
+                <div class="countdown-timer">
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="countdown-days">00</span>
+                        <span class="countdown-label">Days</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="countdown-hours">00</span>
+                        <span class="countdown-label">Hours</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="countdown-minutes">00</span>
+                        <span class="countdown-label">Minutes</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span class="countdown-number" id="countdown-seconds">00</span>
+                        <span class="countdown-label">Seconds</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="conference-description">
+                <h2>About This Conference</h2>
+                <div class="description-text" id="conf-full-description">
+                    <p>This comprehensive conference is designed to provide professionals, businesses, and policymakers with valuable insights and knowledge.</p>
+                    
+                    <p style="margin-top: 20px;">Join us for two days of intensive learning, networking, and strategic planning.</p>
+                </div>
+            </div>
+
+            <div class="target-audience">
+                <h2>Who Should Attend?</h2>
+                <div class="audience-grid">
+                    <div class="audience-item">
+                        <span class="audience-icon">👔</span>
+                        <h4>Tax Professionals</h4>
+                        <p>Accountants, Tax Consultants, Auditors</p>
+                    </div>
+                    <div class="audience-item">
+                        <span class="audience-icon">🚀</span>
+                        <h4>Entrepreneurs</h4>
+                        <p>Business Owners & Startup Founders</p>
+                    </div>
+                    <div class="audience-item">
+                        <span class="audience-icon">🏛️</span>
+                        <h4>Policymakers</h4>
+                        <p>Government Officials & Regulators</p>
+                    </div>
+                    <div class="audience-item">
+                        <span class="audience-icon">💼</span>
+                        <h4>Business Men & Women</h4>
+                        <p>Corporate Executives & Managers</p>
+                    </div>
+                    <div class="audience-item">
+                        <span class="audience-icon">👨‍💼</span>
+                        <h4>Civil Servants</h4>
+                        <p>Government Agency Staff</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pricing-section">
+                <h2>Conference Registration</h2>
+                <div class="price-amount" id="conf-price-display">₦25,000</div>
+                <p style="font-size: 1.2em; color: #2c3e50; margin-bottom: 10px;">Full 2-Day Virtual Access</p>
+                
+                <div class="price-includes">
+                    <h4>Your Registration Includes:</h4>
+                    <ul id="conf-includes">
+                        <li>Access to all live conference sessions</li>
+                        <li>Digital conference materials and resources</li>
+                        <li>Interactive Q&A sessions with experts</li>
+                        <li>Certificate of participation</li>
+                        <li>Networking opportunities with professionals</li>
+                        <li>Recording access for 30 days post-conference</li>
+                        <li>Comprehensive resource toolkit</li>
+                    </ul>
+                </div>
+                
+                <p class="price-note">* Group discounts available for 3 or more attendees from the same organization</p>
+            </div>
+
+            <div class="conference-objectives">
+                <h2>Conference Objectives</h2>
+                <div class="objectives-grid">
+                    <div class="objective-item">
+                        <h4>Understanding New Tax Laws</h4>
+                        <p>Gain comprehensive knowledge of the latest tax reforms and their specific provisions affecting different sectors and industries.</p>
+                    </div>
+                    <div class="objective-item">
+                        <h4>Comparative Analysis</h4>
+                        <p>Compare new tax legislation with previous laws to understand changes, improvements, and potential challenges in implementation.</p>
+                    </div>
+                    <div class="objective-item">
+                        <h4>Compliance Strategies</h4>
+                        <p>Learn practical strategies for ensuring compliance with new tax requirements while minimizing administrative burdens.</p>
+                    </div>
+                    <div class="objective-item">
+                        <h4>Tax Optimization</h4>
+                        <p>Discover legitimate opportunities for tax optimization and planning within the framework of the new tax reforms.</p>
+                    </div>
+                    <div class="objective-item">
+                        <h4>Implementation Guidance</h4>
+                        <p>Receive expert guidance on effectively implementing the new tax reforms in various organizational contexts.</p>
+                    </div>
+                    <div class="objective-item">
+                        <h4>Policy Implications</h4>
+                        <p>Understand the broader economic and policy implications of the tax reforms for businesses and the national economy.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-section">
+                <h2>Register Now for This Essential Tax Conference</h2>
+                <p style="font-size: 1.1em; color: #7f8c8d; margin-bottom: 30px; max-width: 600px; margin-left: auto; margin-right: auto;">
+                    Don't miss this opportunity to stay ahead of tax reforms and ensure your organization remains compliant while maximizing tax opportunities.
+                </p>
+                
+                <div class="action-buttons">
+                    <a href="payment.html" class="btn btn-primary" id="register-button">
+                        <span class="btn-icon">🚀</span>
+                        <span id="register-button-text">Register Now - ₦25,000</span>
+                    </a>
+                    <a href="../index.html" class="btn btn-secondary">
+                        <span class="btn-icon">🏠</span>
+                        Back to Homepage
+                    </a>
+                    <a href="mailto:info@nigerlandconsult.com" class="btn btn-outline">
+                        <span class="btn-icon">📧</span>
+                        Request Information
+                    </a>
+                </div>
+
+                <div class="support-info">
+                    <p>Need assistance with registration? <a href="mailto:registration@nigerlandconsult.com">Contact our registration team</a></p>
+                    <p style="margin-top: 15px; font-size: 0.95em;">
+                        📞 Call us: +234 800 123 4567 | 📧 Email: info@nigerlandconsult.com
+                    </p>
+                    
+                    <div class="security-badges">
+                        <div class="badge">🔒 Secure Payment</div>
+                        <div class="badge">📧 Instant Confirmation</div>
+                        <div class="badge">🤝 24/7 Support</div>
+                        <div class="badge">💻 Online Conference</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="contact.html">Contact Us</a>
+                <a href="faq.html">FAQ</a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Nigerland Consult Limited. All rights reserved. | 
+                Online Conference on Understanding the New Tax Reforms and Their Implications
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Default conference date (fallback)
+        window.conferenceDate = new Date('December 9, 2025 09:00:00').getTime();
+        
+        // Countdown timer
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = window.conferenceDate - now;
+
+            if (distance < 0) {
+                document.getElementById('countdown-days').textContent = '00';
+                document.getElementById('countdown-hours').textContent = '00';
+                document.getElementById('countdown-minutes').textContent = '00';
+                document.getElementById('countdown-seconds').textContent = '00';
+                document.querySelector('.countdown h3').textContent = 'Conference Started!';
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('countdown-days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('countdown-hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('countdown-minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('countdown-seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+
+        // Update countdown every second
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+        // Add animation to audience items on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe audience items for animation
+        document.querySelectorAll('.audience-item').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(item);
+        });
+
+        // Observe objective items for animation
+        document.querySelectorAll('.objective-item').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(item);
+        });
+
+        console.log('Tax conference registration page loaded successfully!');
+    </script>
+</body>
+</html>
+<script>
+// Get conference details from URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+const confId = urlParams.get('conf');
+const confTitle = urlParams.get('title');
+const confPrice = urlParams.get('price');
+const confDate = urlParams.get('date');
+
+// Conference data with descriptions and details
+const conferenceData = {
+    'tax-2026': {
+        theme: 'Navigating Nigeria\'s Evolving Tax Landscape',
+        description: 'This comprehensive online conference is designed to provide tax professionals, businesses, and policymakers with an in-depth understanding of the new tax reforms and their implications for various sectors. The conference will compare the new tax laws with previous legislation, discuss strategies for effective implementation, ensure compliance, and help participants optimize tax opportunities in the evolving Nigerian tax environment.',
+        includes: [
+            'Access to all live conference sessions',
+            'Digital conference materials and resources',
+            'Interactive Q&A sessions with tax experts',
+            'Certificate of participation',
+            'Networking opportunities with professionals',
+            'Recording access for 30 days post-conference',
+            'Tax reform implementation toolkit'
+        ]
+    },
+    'security-2026': {
+        theme: 'Building a Safer Nigeria',
+        description: 'This critical conference addresses insurgency and security challenges facing Nigeria. Expert speakers will discuss security strategies, counter-terrorism approaches, community safety initiatives, and the role of technology in modern security management. Join security professionals, policymakers, and stakeholders in developing comprehensive solutions for national security.',
+        includes: [
+            'Access to all live conference sessions',
+            'Security strategy frameworks and materials',
+            'Interactive sessions with security experts',
+            'Certificate of participation',
+            'Networking with security professionals',
+            'Conference recordings for 30 days',
+            'Security best practices toolkit'
+        ]
+    },
+    'smart-gov-2026': {
+        theme: 'Digital Transformation in Governance',
+        description: 'Explore the future of government services through technology and innovation. This conference focuses on smart government initiatives, e-governance solutions, digital service delivery, and technology-driven policy implementation. Learn how governments worldwide are leveraging technology to improve citizen services and administrative efficiency.',
+        includes: [
+            'Access to all live conference sessions',
+            'Smart governance case studies and materials',
+            'Interactive Q&A with digital transformation experts',
+            'Certificate of participation',
+            'Networking opportunities with tech leaders',
+            'Conference recordings for 30 days',
+            'Digital governance implementation guide'
+        ]
+    },
+    'eco-climate-2026': {
+        theme: 'Sustainable Development for Nigeria',
+        description: 'Address environmental challenges and climate change impacts in Nigeria. This conference brings together environmental experts, policymakers, and sustainability advocates to discuss climate adaptation strategies, renewable energy solutions, environmental conservation, and sustainable development goals. Contribute to building a more sustainable future for Nigeria.',
+        includes: [
+            'Access to all live conference sessions',
+            'Climate action plans and environmental reports',
+            'Interactive sessions with environmental experts',
+            'Certificate of participation',
+            'Networking with sustainability leaders',
+            'Conference recordings for 30 days',
+            'Sustainability implementation toolkit'
+        ]
+    },
+    'business-dev-2026': {
+        theme: 'Accelerating Business Growth in Nigeria',
+        description: 'Empower your business with cutting-edge strategies and insights. This conference covers business development, entrepreneurship, market expansion, funding strategies, and growth acceleration. Network with successful entrepreneurs, investors, and business leaders while learning proven strategies for scaling your business in the Nigerian market.',
+        includes: [
+            'Access to all live conference sessions',
+            'Business development resources and templates',
+            'Interactive Q&A with business experts',
+            'Certificate of participation',
+            'Networking with entrepreneurs and investors',
+            'Conference recordings for 30 days',
+            'Business growth strategy toolkit'
+        ]
+    }
+};
+
+// Update page if conference parameters exist
+if (confId && confTitle) {
+    // Update header title
+    const headerH1 = document.querySelector('.header h1');
+    if (headerH1) {
+        headerH1.textContent = confTitle;
+    }
+    
+    // Update date
+    const dateElement = document.querySelector('.header .date');
+    if (dateElement && confDate) {
+        dateElement.textContent = confDate;
+    }
+    
+    // Update theme if conference data exists
+    const themeElement = document.querySelector('.conference-theme');
+    if (themeElement && conferenceData[confId]) {
+        themeElement.textContent = conferenceData[confId].theme;
+    }
+    
+    // Update description
+    const descriptionElement = document.getElementById('conf-full-description');
+    if (descriptionElement && conferenceData[confId]) {
+        descriptionElement.innerHTML = '<p>' + conferenceData[confId].description + '</p>';
+    }
+    
+    // Update price display
+    if (confPrice) {
+        const priceDisplay = document.getElementById('conf-price-display');
+        if (priceDisplay) {
+            priceDisplay.textContent = '₦' + parseInt(confPrice).toLocaleString();
+        }
+        
+        // Update register button
+        const registerButtonText = document.getElementById('register-button-text');
+        if (registerButtonText) {
+            registerButtonText.textContent = 'Register Now - ₦' + parseInt(confPrice).toLocaleString();
+        }
+        
+        // Update register button link with payment details
+        const registerButton = document.getElementById('register-button');
+        if (registerButton) {
+            registerButton.href = 'payment.html?type=conference&conf=' + confId + 
+                                 '&title=' + encodeURIComponent(confTitle) + 
+                                 '&price=' + confPrice + 
+                                 '&date=' + encodeURIComponent(confDate);
+        }
+    }
+    
+    // Update what's included
+    const includesElement = document.getElementById('conf-includes');
+    if (includesElement && conferenceData[confId]) {
+        includesElement.innerHTML = conferenceData[confId].includes
+            .map(item => '<li>' + item + '</li>')
+            .join('');
+    }
+    
+    // Update countdown date based on conference date
+    if (confDate) {
+        // Parse the date string to create countdown
+        const dateMatch = confDate.match(/(\w+)\s+(\d+)/);
+        if (dateMatch) {
+            const month = dateMatch[1];
+            const day = dateMatch[2];
+            const year = confDate.includes('2026') ? '2026' : '2025';
+            
+            // Update countdown function with dynamic date
+            window.conferenceDate = new Date(month + ' ' + day + ', ' + year + ' 09:00:00').getTime();
+        }
+    }
+}
+</script>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Verification - Nigerland Consult Limited</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        .loading {
+            display: block;
+        }
+        .success, .error {
+            display: none;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .success-icon {
+            font-size: 4em;
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+        .error-icon {
+            font-size: 4em;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <h2>Verifying Your Payment</h2>
+            <p>Please wait while we confirm your payment...</p>
+        </div>
+        
+        <div class="success" id="success">
+            <div class="success-icon">✓</div>
+            <h2>Payment Successful!</h2>
+            <p>Your payment has been verified successfully.</p>
+            <p><strong>Reference:</strong> <span id="successReference"></span></p>
+            <a href="payment-success.html" class="btn">Continue to Confirmation</a>
+        </div>
+        
+        <div class="error" id="error">
+            <div class="error-icon">✗</div>
+            <h2>Payment Verification Failed</h2>
+            <p id="errorMessage">We couldn't verify your payment. Please try again.</p>
+            <a href="payment.html" class="btn">Try Again</a>
+        </div>
+    </div>
+
+    <script>
+        // Get reference from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const reference = urlParams.get('reference') || urlParams.get('trxref');
+        
+        // Log all URL parameters for debugging
+        console.log('All URL parameters:', Object.fromEntries(urlParams));
+        console.log('Reference found:', reference);
+        
+        async function verifyPayment() {
+            if (!reference) {
+                console.error('No reference found in URL');
+                
+                // For now, if there's no reference but payment came back from Paystack,
+                // redirect to success page with a generic message
+                const status = urlParams.get('status');
+                if (status === 'success' || status === 'successful') {
+                    console.log('Status is success, redirecting to success page');
+                    // Redirect to generic success page
+                    setTimeout(() => {
+                        window.location.href = 'payment-success.html?status=success';
+                    }, 2000);
+                    return;
+                }
+                
+                showError('No payment reference found. If you completed payment, please contact us with your payment confirmation.');
+                return;
+            }
+            
+            try {
+                console.log('Verifying payment with reference:', reference);
+                
+                const response = await fetch(`Api/verify_payment.php?reference=${reference}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Verification response:', data);
+                
+                if (data.success) {
+                    showSuccess(data.data);
+                } else {
+                    showError(data.message || 'Payment verification failed');
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                
+                // If verification API fails but we have a reference, show partial success
+                showPartialSuccess(reference);
+            }
+        }
+        
+        function showSuccess(paymentData) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            document.getElementById('successReference').textContent = paymentData.reference || reference;
+            
+            // Update the success page URL with transaction details
+            const successUrl = `payment-success.html?reference=${paymentData.reference || reference}&transaction_id=${paymentData.transaction_id || ''}`;
+            document.querySelector('.success .btn').href = successUrl;
+        }
+        
+        function showPartialSuccess(ref) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('success').style.display = 'block';
+            document.getElementById('successReference').textContent = ref;
+            
+            // Update success message
+            const successDiv = document.getElementById('success');
+            successDiv.querySelector('p').textContent = 'Your payment has been received. We are processing your transaction.';
+            
+            const successUrl = `payment-success.html?reference=${ref}`;
+            document.querySelector('.success .btn').href = successUrl;
+        }
+        
+        function showError(message) {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('error').style.display = 'block';
+            document.getElementById('errorMessage').textContent = message;
+        }
+        
+        // Start verification when page loads
+        window.addEventListener('load', verifyPayment);
+    </script>
+</body>
+</html>

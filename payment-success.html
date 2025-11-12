@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful - Nigerland Conference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .success-container {
+            max-width: 600px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .success-header {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            padding: 40px 30px;
+        }
+
+        .success-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .success-header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .success-content {
+            padding: 40px;
+        }
+
+        .success-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .detail-value {
+            color: #212529;
+            font-family: monospace;
+        }
+
+        .next-steps {
+            text-align: left;
+            margin: 30px 0;
+        }
+
+        .next-steps h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .next-steps ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .next-steps li {
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .next-steps li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #27ae60;
+            font-weight: bold;
+        }
+
+        .bank-transfer-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        @media (max-width: 768px) {
+            .success-content {
+                padding: 20px;
+            }
+            
+            .actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="success-container">
+        <div class="success-header">
+            <div class="success-icon">✓</div>
+            <h1 id="successTitle">Registration Successful!</h1>
+            <p id="successSubtitle">Your conference registration is now complete</p>
+        </div>
+
+        <div class="success-content">
+            <p id="successMessage">Thank you for registering for the Nigerland Conference 2024. Your payment has been processed successfully.</p>
+
+            <div class="success-details">
+                <div class="detail-item">
+                    <span class="detail-label">Reference Number:</span>
+                    <span class="detail-value" id="referenceNumber">NGL-CONF-20241201-1234</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Transaction ID:</span>
+                    <span class="detail-value" id="transactionId">TXN-1762284481344</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Amount Paid:</span>
+                    <span class="detail-value">₦25,000</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Payment Date:</span>
+                    <span class="detail-value" id="paymentDate">December 1, 2024</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Status:</span>
+                    <span class="detail-value" style="color: #27ae60; font-weight: bold;" id="paymentStatus">Completed</span>
+                </div>
+            </div>
+
+            <div id="bankTransferNotice" class="bank-transfer-notice" style="display: none;">
+                <h3>📧 Important: Send Proof of Payment</h3>
+                <p>Please send your bank transfer proof to <strong>payments@nigerlandconference.org</strong> with your reference number to complete your registration.</p>
+            </div>
+
+            <div class="next-steps">
+                <h3>What's Next?</h3>
+                <ul>
+                    <li>You will receive a confirmation email within 24 hours</li>
+                    <li>Keep your reference number for any inquiries</li>
+                    <li>Conference details and schedule will be sent via email</li>
+                    <li>Bring your ID and this confirmation to the venue</li>
+                </ul>
+            </div>
+
+            <div class="actions">
+                <a href="/Homeland-website" class="btn btn-primary">Return to Homepage</a>
+                <a href="mailto:info@nigerlandconference.org" class="btn btn-secondary">Contact Support</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get parameters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const reference = urlParams.get('reference') || 'NGL-CONF-' + Date.now();
+        const transactionId = urlParams.get('transaction_id');
+        const method = urlParams.get('method');
+
+        // Update page content based on payment method
+        if (method === 'bank-transfer') {
+            document.getElementById('successTitle').textContent = 'Registration Submitted!';
+            document.getElementById('successSubtitle').textContent = 'Complete your payment via bank transfer';
+            document.getElementById('successMessage').textContent = 'Thank you for registering for the Nigerland Conference 2024. Please complete your payment via bank transfer to confirm your registration.';
+            document.getElementById('paymentStatus').textContent = 'Pending Payment';
+            document.getElementById('paymentStatus').style.color = '#f39c12';
+            document.getElementById('bankTransferNotice').style.display = 'block';
+            
+            if (!transactionId) {
+                document.querySelector('.detail-item:nth-child(2)').style.display = 'none';
+            }
+        }
+
+        // Update page content
+        document.getElementById('referenceNumber').textContent = reference;
+        if (transactionId) {
+            document.getElementById('transactionId').textContent = transactionId;
+        } else {
+            document.querySelector('.detail-item:nth-child(2)').style.display = 'none';
+        }
+        document.getElementById('paymentDate').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    </script>
+</body>
+</html>

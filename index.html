@@ -1,0 +1,3115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nigerland - Developing Men, Ideas & Solutions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <style>
+        .training-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .training-actions .btn {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            padding: 10px 15px;
+            font-size: 0.9em;
+        }
+
+        .training-actions .btn-outline {
+            background: transparent;
+            border: 2px solid #3498db;
+            color: #3498db;
+        }
+
+        .training-actions .btn-outline:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .category-card {
+            position: relative;
+            padding-bottom: 6rem;
+        }
+
+        .category-card .training-actions {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 1.5rem;
+            right: 1.5rem;
+        }
+
+        /* Alert Styles */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: none;
+            animation: slideInDown 0.3s ease;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* MoreLife Form Styles */
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+        }
+
+        .form-title {
+            margin-bottom: 1.5rem;
+            color: #1a5276;
+            border-bottom: 2px solid #1a5276;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #1a5276;
+            box-shadow: 0 0 0 2px rgba(26, 82, 118, 0.1);
+        }
+
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+
+        .multiselect-container {
+            position: relative;
+        }
+
+        .multiselect-dropdown {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 12px 15px;
+            background: white;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .multiselect-selected {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .multiselect-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .multiselect-options.active {
+            display: block;
+        }
+
+        .multiselect-option {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .multiselect-option:hover {
+            background-color: #f5f5f5;
+        }
+
+        .multiselect-option:last-child {
+            border-bottom: none;
+        }
+
+        .multiselect-option input[type="checkbox"] {
+            margin-right: 10px;
+            flex-shrink: 0; /* Prevent checkbox from shrinking */
+            cursor: pointer;
+        }
+
+        .multiselect-option label {
+            cursor: pointer;
+            flex-grow: 1;
+            user-select: none;
+        }
+
+        .selected-challenges {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+
+        .challenge-tag {
+            background: #1a5276;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .challenge-tag i {
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .payment-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+
+        .payment-details {
+            margin-top: 1rem;
+            padding: 15px;
+            background: white;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .bank-details {
+            margin-top: 10px;
+        }
+
+        .bank-detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .bank-detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .method-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .method-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .method-option:hover {
+            border-color: #1a5276;
+            background: #f8f9fa;
+        }
+
+        .method-option input {
+            margin-right: 10px;
+        }
+
+        .method-label {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .method-description {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .success-message {
+            text-align: center;
+            padding: 3rem 2rem;
+            display: none;
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            color: #28a745;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-disclaimer {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+        }
+
+        .form-disclaimer h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-disclaimer p {
+            color: #856404;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        .sessions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .session-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .session-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .session-card.featured {
+            border: 2px solid #1a5276;
+            position: relative;
+        }
+
+        .session-type {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1a5276;
+            margin-bottom: 1rem;
+        }
+
+        .session-price {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2e86c1;
+            margin-bottom: 0.5rem;
+        }
+
+        .session-duration {
+            color: #666;
+            margin-bottom: 1.5rem;
+        }
+
+        .session-features {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .session-features li {
+            padding: 8px 0 8px 25px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+        }
+
+        .session-features li:last-child {
+            border-bottom: none;
+        }
+
+        .session-features li:before {
+            content: "✓";
+            color: #28a745;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <a href="#home" class="logo">
+                <div class="logo-text">
+                    <div class="logo-main">
+                        <span>N</span><span>I</span><span>G</span><span>E</span><span>R</span><span>L</span><span>A</span><span>N</span><span>D</span>
+                    </div>
+                    <div class="logo-subtitle">Developing Men, Ideas & Solutions</div>
+                </div>
+            </a>
+            
+            <nav>
+                <ul class="nav-main">
+                    <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+                    <li class="dropdown">
+                        <a href="#about"><i class="fas fa-building"></i> Our Company</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#about-story"><i class="fas fa-history"></i> Our Story</a></li>
+                            <li><a href="#about-mission"><i class="fas fa-bullseye"></i> Mission & Vision</a></li>
+                            <li><a href="#about-team"><i class="fas fa-users"></i> Our Team</a></li>
+                            <li><a href="#about-achievements"><i class="fas fa-trophy"></i> Achievements</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#books"><i class="fas fa-book"></i> Our Books</a></li>
+                    <li class="dropdown">
+                        <a href="#training"><i class="fas fa-chalkboard-teacher"></i> Training</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#training-management"><i class="fas fa-users"></i> Management</a></li>
+                            <li><a href="#training-marketing"><i class="fas fa-chart-line"></i> Marketing</a></li>
+                            <li><a href="#training-business"><i class="fas fa-briefcase"></i> Business Admin</a></li>
+                            <li><a href="#training-computer"><i class="fas fa-laptop-code"></i> Computer</a></li>
+                            <li><a href="#training-health"><i class="fas fa-heartbeat"></i> Public Health</a></li>
+                            <li><a href="#training-social"><i class="fas fa-hands-helping"></i> Social Works</a></li>
+                            <li><a href="#training-safety"><i class="fas fa-shield-alt"></i> Safety</a></li>
+                            <li><a href="#training-security"><i class="fas fa-user-shield"></i> Security</a></li>
+                            <li><a href="#training-insurgency"><i class="fas fa-peace"></i> Insurgency</a></li>
+                            <li><a href="#training-accountancy"><i class="fas fa-calculator"></i> Accountancy</a></li>
+                            <li><a href="#training-creativity"><i class="fas fa-lightbulb"></i> Creativity</a></li>
+                            <li><a href="#training-communication"><i class="fas fa-comments"></i> Communication Skills</a></li>
+                            <li><a href="#morelife"><i class="fas fa-brain"></i> MoreLife Sessions</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#conference"><i class="fas fa-users"></i> Tax Conference</a></li>
+                    <li><a href="#foundation"><i class="fas fa-hands-helping"></i> Foundation</a></li>
+                    <li><a href="#blog"><i class="fas fa-newspaper"></i> Blog</a></li>
+                    <li><a href="#resources"><i class="fas fa-download"></i> Resources</a></li>
+                    <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                </ul>
+                
+                <div class="nav-cta">
+                    <a href="conference-registration.html" target="_blank" class="btn">Register Now</a>
+                </div>
+                
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+        
+        <!-- Mobile Navigation -->
+        <div class="mobile-nav" id="mobileNav">
+            <button class="mobile-close-btn" id="mobileCloseBtn">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <ul>
+                <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li>
+                    <a href="#about" class="mobile-dropdown-toggle"><i class="fas fa-building"></i> Our Company <i class="fas fa-chevron-down"></i></a>
+                    <ul class="mobile-dropdown-menu">
+                        <li><a href="#about-story"><i class="fas fa-history"></i> Our Story</a></li>
+                        <li><a href="#about-mission"><i class="fas fa-bullseye"></i> Mission & Vision</a></li>
+                        <li><a href="#about-team"><i class="fas fa-users"></i> Our Team</a></li>
+                        <li><a href="#about-achievements"><i class="fas fa-trophy"></i> Achievements</a></li>
+                    </ul>
+                </li>
+                <li><a href="#books"><i class="fas fa-book"></i> Our Books</a></li>
+                <li>
+                    <a href="#training" class="mobile-dropdown-toggle"><i class="fas fa-chalkboard-teacher"></i> Training <i class="fas fa-chevron-down"></i></a>
+                    <ul class="mobile-dropdown-menu">
+                        <li><a href="#training-management"><i class="fas fa-users"></i> Management</a></li>
+                        <li><a href="#training-marketing"><i class="fas fa-chart-line"></i> Marketing</a></li>
+                        <li><a href="#training-business"><i class="fas fa-briefcase"></i> Business Admin</a></li>
+                        <li><a href="#training-computer"><i class="fas fa-laptop-code"></i> Computer</a></li>
+                        <li><a href="#training-health"><i class="fas fa-heartbeat"></i> Public Health</a></li>
+                        <li><a href="#training-social"><i class="fas fa-hands-helping"></i> Social Works</a></li>
+                        <li><a href="#training-safety"><i class="fas fa-shield-alt"></i> Safety</a></li>
+                        <li><a href="#training-security"><i class="fas fa-user-shield"></i> Security</a></li>
+                        <li><a href="#training-insurgency"><i class="fas fa-peace"></i> Insurgency</a></li>
+                        <li><a href="#training-accountancy"><i class="fas fa-calculator"></i> Accountancy</a></li>
+                        <li><a href="#training-creativity"><i class="fas fa-lightbulb"></i> Creativity</a></li>
+                        <li><a href="#training-communication"><i class="fas fa-comments"></i> Communication Skills</a></li>
+                        <li><a href="#morelife"><i class="fas fa-brain"></i> MoreLife Sessions</a></li>
+                    </ul>
+                </li>
+                <li><a href="#conference"><i class="fas fa-users"></i> Tax Conference</a></li>
+                <li><a href="#foundation"><i class="fas fa-hands-helping"></i> Foundation</a></li>
+                <li><a href="#blog"><i class="fas fa-newspaper"></i> Blog</a></li>
+                <li><a href="#resources"><i class="fas fa-download"></i> Resources</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+            </ul>
+            
+            <div class="mobile-nav-cta">
+                <a href="conference-registration.html" target="_blank" class="btn">Register Now</a>
+            </div>
+        </div>
+        
+        <div class="mobile-overlay" id="mobileOverlay"></div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-content">
+            <h1>Developing Men, Ideas & Solutions</h1>
+            <p>Nigerland is a consulting consortium aimed at developing human capital through training, publications, and social initiatives.</p>
+            <div class="hero-buttons">
+                <a href="conference-registration.html" target="_blank" class="btn">Register for Conference</a>
+                <a href="training-registration.html" target="_blank" class="btn btn-outline">View Training Programs</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conference Section -->
+    <section id="conference" class="section-padding">
+        <div class="container">
+            <!-- 2025 Conference (Current) -->
+            <div class="section-title">
+                <h2>Current Conference - 2025</h2>
+                <p>Understanding the New Tax Reforms and Their Implications</p>
+            </div>
+            
+            <div class="conference-highlight-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 15px; margin-bottom: 3rem;">
+                <div class="flex items-center justify-between flex-wrap gap-4">
+                    <div>
+                        <h3 style="color: white; font-size: 1.8rem; margin-bottom: 0.5rem;">Online Tax Conference 2025</h3>
+                        <p style="font-size: 1.1rem; margin-bottom: 0.5rem;"><i class="fas fa-calendar"></i> December 9 & 10, 2025</p>
+                        <p style="font-size: 1rem; opacity: 0.9;">For Tax Professionals, Entrepreneurs, Business Owners</p>
+                    </div>
+                    <a href="conference-registration.html?conf=tax-2025&title=Tax Conference 2025&date=December 9-10, 2025" target="_blank" class="btn" style="background: white; color: #667eea;">Register Now</a>
+                </div>
+            </div>
+            
+            <!-- 2026 Conferences (Upcoming) -->
+            <div class="section-title" style="margin-top: 4rem;">
+                <h2>Upcoming Conferences - 2026</h2>
+                <p>Join our exclusive conferences designed for professionals across various sectors</p>
+            </div>
+            
+            <div class="conferences-grid">
+                <!-- Tax Conference -->
+                <div class="conference-card">
+                    <div class="conference-header">
+                        <i class="fas fa-calculator"></i>
+                        <h3>Tax Conference</h3>
+                    </div>
+                    <div class="conference-body">
+                        <div class="conference-date">
+                            <i class="fas fa-calendar"></i>
+                            <span>January 15 & 16, 2026</span>
+                        </div>
+                        <div class="conference-price">₦146,000</div>
+                        <p class="conference-desc">For tax professionals, entrepreneurs, and business owners</p>
+                        <a href="conference-registration.html?conf=tax-2026&title=Tax Conference 2026&price=146000&date=January 15-16, 2026" target="_blank" class="btn">Register Now</a>
+                    </div>
+                </div>
+
+                <!-- Insurgency & Security Conference -->
+                <div class="conference-card">
+                    <div class="conference-header">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Insurgency & Security Conference</h3>
+                    </div>
+                    <div class="conference-body">
+                        <div class="conference-date">
+                            <i class="fas fa-calendar"></i>
+                            <span>March 19-20, 2026</span>
+                        </div>
+                        <div class="conference-audience">
+                            <strong>For:</strong> Governments at all levels, Armed forces, Security Agencies, Institutions
+                        </div>
+                        <a href="conference-registration.html?conf=security-2026&title=Insurgency %26 Security Conference 2026&date=March 19-20, 2026" target="_blank" class="btn">Register Now</a>
+                    </div>
+                </div>
+
+                <!-- Smart Government Conference -->
+                <div class="conference-card">
+                    <div class="conference-header">
+                        <i class="fas fa-landmark"></i>
+                        <h3>Smart Government Conference</h3>
+                    </div>
+                    <div class="conference-body">
+                        <div class="conference-date">
+                            <i class="fas fa-calendar"></i>
+                            <span>May 22 & 23, 2026</span>
+                        </div>
+                        <div class="conference-price">₦259,000</div>
+                        <p class="conference-desc">For Governments, public office seekers, public office holders, Administrators of public and private institutions</p>
+                        <a href="conference-registration.html?conf=smart-gov-2026&title=Smart Government Conference 2026&price=259000&date=May 22-23, 2026" target="_blank" class="btn">Register Now</a>
+                    </div>
+                </div>
+
+                <!-- Nigerian Eco Climate Conference -->
+                <div class="conference-card">
+                    <div class="conference-header">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Nigerian Eco Climate Conference</h3>
+                    </div>
+                    <div class="conference-body">
+                        <div class="conference-date">
+                            <i class="fas fa-calendar"></i>
+                            <span>August 20-21, 2026</span>
+                        </div>
+                        <div class="conference-price">₦208,000</div>
+                        <p class="conference-desc">For economic experts, financial analysts, advisers, economy drivers and entrepreneurs</p>
+                        <a href="conference-registration.html?conf=eco-climate-2026&title=Nigerian Eco Climate Conference 2026&price=208000&date=August 20-21, 2026" target="_blank" class="btn">Register Now</a>
+                    </div>
+                </div>
+
+                <!-- Business Development Conference -->
+                <div class="conference-card">
+                    <div class="conference-header">
+                        <i class="fas fa-briefcase"></i>
+                        <h3>Business Development Conference</h3>
+                    </div>
+                    <div class="conference-body">
+                        <div class="conference-date">
+                            <i class="fas fa-calendar"></i>
+                            <span>October 29 & 30, 2026</span>
+                        </div>
+                        <p class="conference-desc">For entrepreneurs, marketers, management experts, financial analysts, small business developers</p>
+                        <a href="conference-registration.html?conf=business-dev-2026&title=Business Development Conference 2026&date=October 29-30, 2026" target="_blank" class="btn">Register Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section-padding" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Company</h2>
+                <p>Learn about our mission, vision, and journey since 2000</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3 id="about-story">Our Story</h3>
+                    <p>Nigerland was established in 2000 under the leadership of Professor Francis Ngwaba, an American Fulbright Scholar and Professor of English Literature.</p>
+                    <p>We have partnered with tertiary institutions to train over 8,000 people who have contributed to the growth of the Nigerian economy. Our clients include The Polytechnic Calabar, Grace Polytechnic Surulere, Abia State University, Nigerian Airspace Management Agency, and Federal Ministry of Mines and Steel Development.</p>
+                    
+                    <h3 id="about-mission" style="margin-top: 2rem;">Mission & Vision</h3>
+                    <p>Our underlying philosophy is the betterment of man and his society. We believe that if man is properly developed, then mankind can progress.</p>
+                    <p><strong>Mission:</strong> To develop human capital through innovative training, quality publications, and impactful social initiatives.</p>
+                    <p><strong>Vision:</strong> To be Africa's leading consulting consortium for human capital development and social transformation.</p>
+                    
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">8,000+</div>
+                            <div class="stat-text">People Trained</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">20+</div>
+                            <div class="stat-text">Years Experience</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-text">Institutions Served</div>
+                        </div>
+                    </div>
+                    
+                    <h3 id="about-team" style="margin-top: 2rem;">Our Team</h3>
+                    <p>Led by Kelechi Ngwaba, a fellow of the Institute of Chartered Accountants of Nigeria, writer and Management consultant, our team comprises experienced professionals dedicated to delivering exceptional value to our clients.</p>
+                    
+                    <div class="team-grid" style="margin-top: 2rem;">
+                        <div class="team-member">
+                            <img src="images/team/kelechi-ngwaba.jpg" alt="Kelechi Ngwaba">
+                            <h4>Kelechi Ngwaba</h4>
+                            <p class="team-role">Executive Consultant</p>
+                            <p class="team-bio">Fellow of the Institute of Chartered Accountants of Nigeria, writer and Management consultant</p>
+                        </div>
+                        <div class="team-member">
+                            <img src="images/team/obinnaya-uruakpa.jpg" alt="Obinnaya C. Uruakpa">
+                            <h4>Obinnaya C. Uruakpa</h4>
+                            <p class="team-role">Director</p>
+                        </div>
+                    </div>
+                    
+                    <h3 id="about-achievements" style="margin-top: 2rem;">Achievements</h3>
+                    <p>Since our establishment in 2000, we have:</p>
+                    <ul style="margin-left: 2rem; margin-bottom: 1.5rem;">
+                        <li>Trained over 8,000 professionals across various sectors</li>
+                        <li>Published numerous educational books that have impacted thousands of readers</li>
+                        <li>Partnered with over 50 institutions and organizations</li>
+                        <li>Successfully implemented social initiatives through Nigerland Books Foundation</li>
+                        <li>Received recognition for our contribution to human capital development</li>
+                    </ul>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nigerland Team">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Services</h2>
+                <p>Comprehensive solutions for individuals and organizations</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <h3>Publications</h3>
+                    <p>Educational books focusing on governance, development, and African folklore that inspire positive change.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Training Programmes</h3>
+                    <p>Comprehensive training in management, marketing, business administration, and personal development.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <h3>Consultancy Services</h3>
+                    <p>Expert consulting for both public and private sector organizations to drive growth and efficiency.</p>
+                </div>
+                <div class="service-card">
+                    <div class="service-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <h3>Social Initiatives</h3>
+                    <p>Through Nigerland Books Foundation, we promote literacy, ethics, and values in communities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Books Section -->
+    <section id="books" class="section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Books</h2>
+                <p>Educational publications for all ages that inspire and educate</p>
+            </div>
+            <div class="books-slider">
+                <button class="slider-btn prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="books-container">
+                    <div class="book-card">
+                        <div class="book-image">
+                            <img src="images/books/the generations.jpg" alt="THE GENERATIONS Book Cover">
+                            <div class="book-overlay">
+                                <a href="ebook-purchase.html?book=the-generations&title=The Generations&price=1500" class="btn">Purchase Now</a>
+                            </div>
+                        </div>
+                        <div class="book-info">
+                            <h3>THE GENERATIONS</h3>
+                            <p>A story that fictionally chronicles landmark events in Nigeria from 1929 to 1999.</p>
+                            <div class="book-price">₦1,500</div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-image">
+                            <img src="images/books/three feet tall.jpg" alt="THREE FEET TALL Book Cover">
+                            <div class="book-overlay">
+                                <a href="ebook-purchase.html?book=three-feet-tall&title=Three Feet Tall&price=2500" class="btn">Purchase Now</a>
+                            </div>
+                        </div>
+                        <div class="book-info">
+                            <h3>THREE FEET TALL</h3>
+                            <p>Compares Nigeria's search for independence with the life of a growing child.</p>
+                            <div class="book-price">₦2,500</div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-image">
+                            <img src="images/books/never again.jpg" alt="NEVER AGAIN Book Cover">
+                            <div class="book-overlay">
+                                <a href="ebook-purchase.html?book=never-again&title=Never Again&price=4500" class="btn">Purchase Now</a>
+                            </div>
+                        </div>
+                        <div class="book-info">
+                            <h3>NEVER AGAIN</h3>
+                            <p>Uses a hypothetical African country to call the world to order and justice.</p>
+                            <div class="book-price">₦4,500</div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-image">
+                            <img src="images/books/the good nigerian.jpg" alt="THE GOOD NIGERIAN Book Cover">
+                            <div class="book-overlay">
+                                <a href="ebook-purchase.html?book=the-good-nigerian&title=The Good Nigerian&price=1500" class="btn">Purchase Now</a>
+                            </div>
+                        </div>
+                        <div class="book-info">
+                            <h3>THE GOOD NIGERIAN</h3>
+                            <p>Highlights virtues of honesty, obedience to laws, and productivity for national development.</p>
+                            <div class="book-price">₦1,500</div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-image">
+                            <img src="images/books/the quest.jpg" alt="THE QUEST Book Cover">
+                            <div class="book-overlay">
+                                <a href="ebook-purchase.html?book=the-quest&title=The Quest&price=1500" class="btn">Purchase Now</a>
+                            </div>
+                        </div>
+                        <div class="book-info">
+                            <h3>THE QUEST</h3>
+                            <p>A journey of discovery and self-realization.</p>
+                            <div class="book-price">₦1,500</div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-image">
+                            <img src="images/books/yomi.jpg" alt="YOMI AND THE THREE THIEVES Book Cover">
+                            <div class="book-overlay">
+                                <a href="ebook-purchase.html?book=yomi-thieves&title=Yomi and the Three Thieves&price=1500" class="btn">Purchase Now</a>
+                            </div>
+                        </div>
+                        <div class="book-info">
+                            <h3>YOMI AND THE THREE THIEVES</h3>
+                            <p>An educational story for children about honesty and courage.</p>
+                            <div class="book-price">₦1,500</div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-image">
+                            <img src="images/books/salute to .jpg" alt="NIGERIA'S HERO Vol 1 Book Cover">
+                            <div class="book-overlay">
+                                <a href="ebook-purchase.html?book=nigerias-hero-vol1&title=Nigeria's Hero Vol 1&price=1500" class="btn">Purchase Now</a>
+                            </div>
+                        </div>
+                        <div class="book-info">
+                            <h3>NIGERIA'S HERO Vol 1</h3>
+                            <p>Inspiring stories of Nigerian heroes and their contributions.</p>
+                            <div class="book-price">₦1,500</div>
+                        </div>
+                    </div>
+                    <div class="book-card">
+                        <div class="book-image">
+                            <img src="images/books/the tiger and lion.jpg" alt="NIGERIA'S HERO Vol 2 Book Cover">
+                            <div class="book-overlay">
+                                <a href="ebook-purchase.html?book=nigerias-hero-vol2&title=Nigeria's Hero Vol 2&price=1500" class="btn">Purchase Now</a>
+                            </div>
+                        </div>
+                        <div class="book-info">
+                            <h3>NIGERIA'S HERO Vol 2</h3>
+                            <p>Continuing stories of Nigerian heroes and their legacies.</p>
+                            <div class="book-price">₦1,500</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="slider-btn next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="ebook-purchase.html" class="btn">View All Ebooks</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Training Section -->
+    <section class="training section-padding" id="training">
+        <div class="container">
+            <div class="section-title">
+                <h2>Training Programmes</h2>
+                <p>Comprehensive training for personal and professional development</p>
+            </div>
+            <div class="training-categories">
+                <!-- Management -->
+                <div class="category-card" id="training-management">
+                    <h3><i class="fas fa-users"></i> Management</h3>
+                    <ul>
+                        <li>Leadership Development</li>
+                        <li>Strategic Planning</li>
+                        <li>Project Management</li>
+                        <li>Team Building</li>
+                        <li>Change Management</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/management.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=management" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Marketing -->
+                <div class="category-card" id="training-marketing">
+                    <h3><i class="fas fa-chart-line"></i> Marketing</h3>
+                    <ul>
+                        <li>Digital Marketing</li>
+                        <li>Brand Management</li>
+                        <li>Market Research</li>
+                        <li>Sales Techniques</li>
+                        <li>Customer Relationship</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/marketing.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=marketing" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Business Admin -->
+                <div class="category-card" id="training-business">
+                    <h3><i class="fas fa-briefcase"></i> Business Administration</h3>
+                    <ul>
+                        <li>Office Management</li>
+                        <li>Business Communication</li>
+                        <li>Administrative Procedures</li>
+                        <li>Record Keeping</li>
+                        <li>Business Ethics</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/business-admin.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=business-admin" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Computer -->
+                <div class="category-card" id="training-computer">
+                    <h3><i class="fas fa-laptop-code"></i> Computer</h3>
+                    <ul>
+                        <li>Basic Computer Skills</li>
+                        <li>Software Applications</li>
+                        <li>IT Fundamentals</li>
+                        <li>Digital Literacy</li>
+                        <li>Cybersecurity Basics</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/computer.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=computer" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Public Health -->
+                <div class="category-card" id="training-health">
+                    <h3><i class="fas fa-heartbeat"></i> Public Health</h3>
+                    <ul>
+                        <li>Health Education</li>
+                        <li>Community Health</li>
+                        <li>Disease Prevention</li>
+                        <li>Health Promotion</li>
+                        <li>Public Health Administration</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/public-health.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=public-health" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Social Works -->
+                <div class="category-card" id="training-social">
+                    <h3><i class="fas fa-hands-helping"></i> Social Works</h3>
+                    <ul>
+                        <li>Community Development</li>
+                        <li>Social Welfare</li>
+                        <li>Counseling Techniques</li>
+                        <li>Social Policy</li>
+                        <li>Human Rights Advocacy</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/social-works.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=social-works" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Safety -->
+                <div class="category-card" id="training-safety">
+                    <h3><i class="fas fa-shield-alt"></i> Safety</h3>
+                    <ul>
+                        <li>Workplace Safety</li>
+                        <li>Risk Assessment</li>
+                        <li>Emergency Response</li>
+                        <li>Safety Regulations</li>
+                        <li>Accident Prevention</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/safety.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=safety" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Security -->
+                <div class="category-card" id="training-security">
+                    <h3><i class="fas fa-user-shield"></i> Security</h3>
+                    <ul>
+                        <li>Security Management</li>
+                        <li>Surveillance Systems</li>
+                        <li>Access Control</li>
+                        <li>Crisis Management</li>
+                        <li>Security Protocols</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/security.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=security" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Insurgency -->
+                <div class="category-card" id="training-insurgency">
+                    <h3><i class="fas fa-peace"></i> Insurgency</h3>
+                    <ul>
+                        <li>Conflict Resolution</li>
+                        <li>Peace Building</li>
+                        <li>Counter-insurgency Strategies</li>
+                        <li>Community Resilience</li>
+                        <li>Rehabilitation Programs</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/insurgency.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=insurgency" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Accountancy -->
+                <div class="category-card" id="training-accountancy">
+                    <h3><i class="fas fa-calculator"></i> Accountancy</h3>
+                    <ul>
+                        <li>Financial Accounting</li>
+                        <li>Tax Preparation</li>
+                        <li>Auditing Procedures</li>
+                        <li>Financial Reporting</li>
+                        <li>Accounting Software</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/accountancy.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=accountancy" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Creativity -->
+                <div class="category-card" id="training-creativity">
+                    <h3><i class="fas fa-lightbulb"></i> Creativity</h3>
+                    <ul>
+                        <li>Innovative Thinking</li>
+                        <li>Problem Solving</li>
+                        <li>Design Thinking</li>
+                        <li>Creative Processes</li>
+                        <li>Idea Generation</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/creativity.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=creativity" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+
+                <!-- Communication Skills -->
+                <div class="category-card" id="training-communication">
+                    <h3><i class="fas fa-comments"></i> Communication Skills</h3>
+                    <ul>
+                        <li>Public Speaking</li>
+                        <li>Business Writing</li>
+                        <li>Interpersonal Skills</li>
+                        <li>Presentation Skills</li>
+                        <li>Negotiation Techniques</li>
+                    </ul>
+                    <div class="training-actions">
+                        <a href="training-programs/communication.html" class="btn btn-outline" target="_blank">View Programmes</a>
+                        <a href="training-registration.html?program=communication" class="btn" target="_blank">Fill Form</a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="training-registration.html" class="btn" target="_blank">Register for Training</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- MoreLife Section -->
+<section id="morelife" class="section-padding">
+    <div class="morelife-hero">
+        <div class="container morelife-hero-content">
+            <h1>MoreLife Training Sessions</h1>
+            <p>Transform your life with our academic solutions to personal challenges</p>
+            <a href="#morelife-form" class="btn">Start Your Journey</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="section-title">
+            <h2>Are You Experiencing These Challenges?</h2>
+            <p>Many people face these issues, but there is a way forward</p>
+        </div>
+        <div class="challenges-grid">
+            <div class="challenge-card">
+                <div class="challenge-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>More Stress?</h3>
+                <p>Feeling overwhelmed by daily pressures and responsibilities?</p>
+            </div>
+            <div class="challenge-card">
+                <div class="challenge-icon">
+                    <i class="fas fa-sad-tear"></i>
+                </div>
+                <h3>More Depression?</h3>
+                <p>Struggling with persistent sadness and lack of motivation?</p>
+            </div>
+            <div class="challenge-card">
+                <div class="challenge-icon">
+                    <i class="fas fa-heart-broken"></i>
+                </div>
+                <h3>More Heart Ache?</h3>
+                <p>Dealing with emotional pain from relationships or loss?</p>
+            </div>
+            <div class="challenge-card">
+                <div class="challenge-icon">
+                    <i class="fas fa-user-friends"></i>
+                </div>
+                <h3>More Loneliness?</h3>
+                <p>Feeling isolated despite being surrounded by people?</p>
+            </div>
+            <div class="challenge-card">
+                <div class="challenge-icon">
+                    <i class="fas fa-times-circle"></i>
+                </div>
+                <h3>More Disappointments?</h3>
+                <p>Facing repeated letdowns and unmet expectations?</p>
+            </div>
+            <div class="challenge-card">
+                <div class="challenge-icon">
+                    <i class="fas fa-user-minus"></i>
+                </div>
+                <h3>Low Self Esteem?</h3>
+                <p>Struggling with feelings of inadequacy and self-doubt?</p>
+            </div>
+        </div>
+        <div class="morelife-cta">
+            <h2>BUT need MORELIFE?</h2>
+            <p>If you're experiencing any of these challenges and want to transform your life, our MoreLife sessions provide academic solutions to help you overcome them.</p>
+            <a href="#morelife-form" class="btn">SEEK MORELIFE TODAY</a>
+        </div>
+    </div>
+
+    <div class="sessions section-padding" id="sessions">
+        <div class="container">
+            <div class="section-title">
+                <h2>Session Options</h2>
+                <p>JOINT & PRIVATE SESSIONS AVAILABLE</p>
+            </div>
+            <div class="sessions-container">
+                <div class="session-card">
+                    <div class="session-type">2 WEEKS PRIVATE SESSION</div>
+                    <div class="session-price">₦85,000</div>
+                    <div class="session-duration">Intensive 2-week program</div>
+                    <ul class="session-features">
+                        <li>14 days of personalized coaching</li>
+                        <li>Daily one-on-one sessions</li>
+                        <li>Customized action plan</li>
+                        <li>Progress tracking</li>
+                        <li>Resource materials</li>
+                        <li>Post-session follow-up</li>
+                    </ul>
+                    <a href="#morelife-form" class="btn" onclick="selectSession('2-weeks-private', 85000)">Select This Plan</a>
+                </div>
+                <div class="session-card featured">
+                    <div class="session-type">ONE WEEK PRIVATE SESSION</div>
+                    <div class="session-price">₦45,000</div>
+                    <div class="session-duration">Focused 1-week program</div>
+                    <ul class="session-features">
+                        <li>7 days of personalized coaching</li>
+                        <li>Daily one-on-one sessions</li>
+                        <li>Customized action plan</li>
+                        <li>Progress tracking</li>
+                        <li>Resource materials</li>
+                        <li>Post-session follow-up</li>
+                    </ul>
+                    <a href="#morelife-form" class="btn" onclick="selectSession('1-week-private', 45000)">Select This Plan</a>
+                </div>
+                <div class="session-card">
+                    <div class="session-type">GROUP SESSIONS</div>
+                    <div class="session-price">₦25,000</div>
+                    <div class="session-duration">4 weeks of group coaching</div>
+                    <ul class="session-features">
+                        <li>Weekly group sessions</li>
+                        <li>Peer support network</li>
+                        <li>Shared learning experience</li>
+                        <li>Resource materials</li>
+                        <li>Progress tracking</li>
+                        <li>Community access</li>
+                    </ul>
+                    <a href="#morelife-form" class="btn" onclick="selectSession('group', 25000)">Select This Plan</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="morelife-form-section section-padding" id="morelife-form">
+        <div class="container">
+            <div class="section-title">
+                <h2>MoreLife Sessions Form</h2>
+                <p>Begin your transformation journey today</p>
+            </div>
+            
+            <!-- Alert Container -->
+            <div class="alert" id="morelifeAlert"></div>
+            
+            <!-- Loading Spinner -->
+            <div class="loading-spinner" id="morelifeLoading">
+                <div class="spinner"></div>
+                <p>Processing your request...</p>
+            </div>
+
+            <div class="form-container">
+                <form id="morelifeForm" onsubmit="submitMorelifeForm(event)">
+                    <!-- Step 1: Personal Information -->
+                    <div class="form-step active" id="step1">
+                        <h3 class="form-title">Personal Information</h3>
+                        
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="full_name" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="location">Location *</label>
+                                <input type="text" id="location" name="location" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="age">Age *</label>
+                                <input type="number" id="age" name="age" class="form-control" min="16" max="100" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" class="form-control" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="education">Education Level *</label>
+                            <select id="education" name="education" class="form-control" required>
+                                <option value="">Select Education Level</option>
+                                <option value="secondary">Secondary School</option>
+                                <option value="undergraduate">Undergraduate</option>
+                                <option value="graduate">Graduate</option>
+                                <option value="postgraduate">Postgraduate</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="challenge">Specific Area of Challenge *</label>
+                            <div class="multiselect-container">
+                                <div class="multiselect-dropdown" id="challengeDropdown">
+                                    <div class="multiselect-selected">
+                                        <span id="selectedText">Select one or more challenges</span>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="multiselect-options" id="challengeOptions">
+                                        <div class="multiselect-option" data-value="more_stress">
+                                            <input type="checkbox" id="more_stress" name="challenges[]" value="more_stress">
+                                            <label for="more_stress">More Stress?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="more_depression">
+                                            <input type="checkbox" id="more_depression" name="challenges[]" value="more_depression">
+                                            <label for="more_depression">More Depression?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="more_heart_ache">
+                                            <input type="checkbox" id="more_heart_ache" name="challenges[]" value="more_heart_ache">
+                                            <label for="more_heart_ache">More heart ache?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="more_loneliness">
+                                            <input type="checkbox" id="more_loneliness" name="challenges[]" value="more_loneliness">
+                                            <label for="more_loneliness">More loneliness?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="more_disappointments">
+                                            <input type="checkbox" id="more_disappointments" name="challenges[]" value="more_disappointments">
+                                            <label for="more_disappointments">More disappointments?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="low_self_esteem">
+                                            <input type="checkbox" id="low_self_esteem" name="challenges[]" value="low_self_esteem">
+                                            <label for="low_self_esteem">Low self esteem?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="low_self_confidence">
+                                            <input type="checkbox" id="low_self_confidence" name="challenges[]" value="low_self_confidence">
+                                            <label for="low_self_confidence">Low self confidence?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="inferiority_complex">
+                                            <input type="checkbox" id="inferiority_complex" name="challenges[]" value="inferiority_complex">
+                                            <label for="inferiority_complex">Inferiority complex?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="fear">
+                                            <input type="checkbox" id="fear" name="challenges[]" value="fear">
+                                            <label for="fear">Fear?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="anxiety">
+                                            <input type="checkbox" id="anxiety" name="challenges[]" value="anxiety">
+                                            <label for="anxiety">Anxiety?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="low_productivity">
+                                            <input type="checkbox" id="low_productivity" name="challenges[]" value="low_productivity">
+                                            <label for="low_productivity">Low productivity?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="poor_creativity">
+                                            <input type="checkbox" id="poor_creativity" name="challenges[]" value="poor_creativity">
+                                            <label for="poor_creativity">Poor Creativity?</label>
+                                        </div>
+                                        <div class="multiselect-option" data-value="other">
+                                            <input type="checkbox" id="other_challenge_checkbox" name="challenges[]" value="other">
+                                            <label for="other_challenge_checkbox">Other (please specify below)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="selected-challenges" id="selectedChallenges">
+                                    <!-- Selected challenges will appear here -->
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 10px;">
+                                <label for="other_challenge">Other Challenges (Please specify)</label>
+                                <input type="text" id="other_challenge" name="other_challenge" class="form-control" placeholder="Enter other challenges not listed above">
+                            </div>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="btn" onclick="nextStep(1)">Next: Challenge Details</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Challenge Details & Payment -->
+                    <div class="form-step" id="step2">
+                        <h3 class="form-title">Challenge Details & Payment</h3>
+                        
+                        <div class="form-group">
+                            <label for="cause">What do you think is the likely cause of the challenge you are experiencing? *</label>
+                            <textarea id="cause" name="cause" class="form-control" required></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="duration">How long have you been experiencing this challenge? *</label>
+                            <select id="duration" name="duration" class="form-control" required>
+                                <option value="">Select Duration</option>
+                                <option value="less-than-month">Less than a month</option>
+                                <option value="1-3-months">1-3 months</option>
+                                <option value="3-6-months">3-6 months</option>
+                                <option value="6-12-months">6-12 months</option>
+                                <option value="1-2-years">1-2 years</option>
+                                <option value="more-than-2-years">More than 2 years</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="incident">Which incident triggered off this challenge?</label>
+                            <textarea id="incident" name="incident" class="form-control"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="medication">Are you on any drugs aimed at curing this challenge? *</label>
+                            <select id="medication" name="medication" class="form-control" required>
+                                <option value="">Select Option</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="start-month">What month will you like to commence MoreLife sessions? *</label>
+                            <select id="start-month" name="start_month" class="form-control" required>
+                                <option value="">Select Month</option>
+                                <option value="january">January</option>
+                                <option value="february">February</option>
+                                <option value="march">March</option>
+                                <option value="april">April</option>
+                                <option value="may">May</option>
+                                <option value="june">June</option>
+                                <option value="july">July</option>
+                                <option value="august">August</option>
+                                <option value="september">September</option>
+                                <option value="october">October</option>
+                                <option value="november">November</option>
+                                <option value="december">December</option>
+                            </select>
+                        </div>
+
+                        <!-- Payment Section -->
+                        <div class="payment-section">
+                            <h4>Session Payment</h4>
+                            <div class="selected-session-info" id="selectedSessionInfo">
+                                <p><strong>Selected Session:</strong> <span id="sessionTypeDisplay">Please select a session type</span></p>
+                                <p><strong>Amount:</strong> <span id="sessionAmountDisplay">₦0</span></p>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="session-type">Preferred Session Type *</label>
+                                <select id="session-type" name="session_type" class="form-control" required onchange="updateSessionPayment()">
+                                    <option value="">Select Session Type</option>
+                                    <option value="2-weeks-private" data-price="85000">2 Weeks Private Session (₦85,000)</option>
+                                    <option value="1-week-private" data-price="45000">1 Week Private Session (₦45,000)</option>
+                                    <option value="group" data-price="25000">Group Sessions (₦25,000)</option>
+                                </select>
+                            </div>
+
+                            <div class="payment-method">
+                                <label>Payment Method *</label>
+                                <div class="method-options">
+                                    <label class="method-option">
+                                        <input type="radio" name="payment_method" value="paystack" required onclick="togglePaymentMethod('paystack')"> 
+                                        <div>
+                                            <div class="method-label">Online Payment (PayStack)</div>
+                                            <div class="method-description">Pay with card, bank transfer, or USSD</div>
+                                        </div>
+                                    </label>
+                                    <label class="method-option">
+                                        <input type="radio" name="payment_method" value="bank_transfer" onclick="togglePaymentMethod('bank_transfer')"> 
+                                        <div>
+                                            <div class="method-label">Bank Transfer</div>
+                                            <div class="method-description">Transfer directly to our bank account</div>
+                                        </div>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- PayStack Payment Info -->
+                            <div class="payment-details" id="paystackInfo" style="display: none;">
+                                <h3>Online Payment</h3>
+                                <p>You will be redirected to our secure payment gateway where you can complete your payment using card, bank transfer, or USSD.</p>
+                            </div>
+
+                            <!-- Bank Transfer Info -->
+                            <div class="payment-details" id="bankTransferInfo" style="display: none;">
+                                <h3>Bank Transfer Details</h3>
+                                <p>Please transfer the session amount to the following account details:</p>
+                                <div class="bank-details">
+                                    <div class="bank-detail-item">
+                                        <strong>Bank Name:</strong>
+                                        <span>Guaranty Trust Bank (GTB)</span>
+                                    </div>
+                                    <div class="bank-detail-item">
+                                        <strong>Account Name:</strong>
+                                        <span>Nigerland Consult Limited</span>
+                                    </div>
+                                    <div class="bank-detail-item">
+                                        <strong>Account Number:</strong>
+                                        <span>0123456789</span>
+                                    </div>
+                                    <div class="bank-detail-item">
+                                        <strong>Amount:</strong>
+                                        <span id="bankAmount">₦0</span>
+                                    </div>
+                                </div>
+                                <p style="margin-top: 15px; font-style: italic;">
+                                    After transferring, please send your proof of payment to 
+                                    <strong>morelife@nigerlandconsult.com</strong> with your name and reference number.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="form-navigation">
+                            <button type="button" class="btn btn-outline" onclick="prevStep(2)">Back</button>
+                            <button type="submit" class="btn" id="submitMorelifeBtn">Submit & Proceed to Payment</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Success Message -->
+                    <div class="success-message" id="successMessage">
+                        <div class="success-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h3>Application Submitted Successfully!</h3>
+                        <p>Thank you for your interest in MoreLife sessions. Our team will review your application and contact you within 48 hours to discuss the next steps.</p>
+                        <a href="#home" class="btn">Return to Home</a>
+                    </div>
+                </form>
+                
+                <div class="form-disclaimer">
+                    <h4>Important Note</h4>
+                    <p>MoreLife sessions are purely academic solutions to your challenges. We are an educational consulting house and not a hospital. Our programs are designed to provide guidance, strategies, and support for personal development, but they are not a substitute for medical or psychological treatment. If you have serious medical or psychological conditions, please consult with a qualified healthcare professional.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Foundation Section -->
+    <section id="foundation" class="section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nigerland Books Foundation</h2>
+                <p>Promoting literacy, ethics, and values for a better society</p>
+            </div>
+            <div class="foundation-content">
+                <div class="foundation-text">
+                    <h3>Building a Better Society Through Education</h3>
+                    <p>Nigerland Books Foundation (NBF) is a knowledge-based NGO that seeks to instill Morals, Ethics and Values (MEVs) which are largely the bane of development.</p>
+                    <p>We aim to eradicate illiteracy, promote reading culture, and use education as a tool to fight hunger and ignorance. Through our initiatives, we donate books to schools, organize reading programs, and promote positive thinking and creative skills among youth.</p>
+                    
+                    <div class="foundation-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-book-open"></i>
+                            </div>
+                            <div class="feature-text">Promoting Reading Culture</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="feature-text">Fighting Illiteracy</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <div class="feature-text">Community Development</div>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="feature-text">Enhancing Creative Thinking</div>
+                        </div>
+                    </div>
+                    
+                    <a href="#contact" class="btn" style="margin-top: 2rem;">Partner With Us</a>
+                </div>
+                <div class="foundation-image">
+                    <img src="images/books/children1.jpg" alt="Nigerland Books Foundation">
+                </div>
+            </div>
+            
+            <!-- Foundation Gallery -->
+            <div class="foundation-gallery" style="margin-top: 4rem;">
+                <h3 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">Our Impact in Pictures</h3>
+                <div class="gallery-grid">
+                    <img src="images/books/children group.jpg" alt="Foundation Activities">
+                    <img src="images/books/children2.jpg" alt="Book Distribution">
+                    <img src="images/books/present1.jpg" alt="Community Outreach">
+                    <img src="images/books/building courage.jpg" alt="Educational Programs">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nigerland Projects Section -->
+    <section id="projects" class="section-padding" style="background-color: var(--light);">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nigerland Projects</h2>
+                <p>Celebrating milestones and building the future</p>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-birthday-cake"></i>
+                    </div>
+                    <h3>Nigerland at 25</h3>
+                    <p>From October 2000 to Date, Nigerland has contributed immensely towards developing MEN and Creating Solutions. Nigerland hit 25 in October 2025 and the diverse family is set to celebrate her and her ideals.</p>
+                    <p><strong>Prominent feature:</strong> The humanitarian side will be anchored by Nigerland Books Foundation.</p>
+                </div>
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Who's Who Series</h3>
+                    <p>National and state-wide publications on who's who is a unique upcoming project for Nigerland.</p>
+                    <p>This comprehensive directory will celebrate and document influential personalities making an impact in their communities and across the nation.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Logistics & Marketing Section -->
+    <section id="logistics" class="section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nigerland Logistics & Marketing</h2>
+                <p>First-class services in travels, tours, and marketing</p>
+            </div>
+            <div class="logistics-content">
+                <div class="logistics-text">
+                    <p>Our Logistics arm is headed by Uduak Nkanga Ngwaba.</p>
+                    <p>The arm renders first class services in travels and tours as well as provision of marketing services to clients.</p>
+                    <div class="logistics-services">
+                        <div class="service-item">
+                            <i class="fas fa-plane"></i>
+                            <span>Travel & Tours</span>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-briefcase"></i>
+                            <span>Marketing Services</span>
+                        </div>
+                        <div class="service-item">
+                            <i class="fas fa-shipping-fast"></i>
+                            <span>Logistics Solutions</span>
+                        </div>
+                    </div>
+                    <a href="#contact" class="btn" style="margin-top: 2rem;">Contact Logistics Team</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section id="blog" class="section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>Latest News & Insights</h2>
+                <p>Stay updated with our latest articles, events, and industry insights</p>
+            </div>
+            <div class="blog-grid" id="blogGrid">
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Tax Reforms Article">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Dec 1, 2023</span>
+                            <span><i class="far fa-folder"></i> Tax Updates</span>
+                        </div>
+                        <h3>Understanding Nigeria's New Tax Reforms</h3>
+                        <p>An in-depth analysis of the latest tax reforms and their implications for businesses and individuals.</p>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Leadership Training">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Nov 15, 2023</span>
+                            <span><i class="far fa-folder"></i> Training</span>
+                        </div>
+                        <h3>Effective Leadership in Modern Organizations</h3>
+                        <p>Key strategies for developing leadership skills that drive organizational success in today's dynamic business environment.</p>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Personal Development">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Nov 5, 2023</span>
+                            <span><i class="far fa-folder"></i> Personal Growth</span>
+                        </div>
+                        <h3>Overcoming Personal Challenges with MoreLife</h3>
+                        <p>How our MoreLife sessions provide academic solutions to common personal challenges and promote mental wellbeing.</p>
+                        <a href="#" class="blog-link">Read More <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="#" class="btn">View All Articles</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources" class="section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>Resources & Downloads</h2>
+                <p>Access free resources, templates, and educational materials</p>
+            </div>
+            <div class="resources-grid">
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3>Training Templates</h3>
+                    <p>Download free templates for your training sessions and workshops.</p>
+                    <a href="#" class="btn btn-outline">Download</a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h3>Reading Materials</h3>
+                    <p>Access free reading materials and educational resources.</p>
+                    <a href="#" class="btn btn-outline">Download</a>
+                </div>
+                <div class="resource-card">
+                    <div class="resource-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>Research Papers</h3>
+                    <p>Download our latest research papers and case studies.</p>
+                    <a href="#" class="btn btn-outline">Download</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter section-padding">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Stay Updated</h2>
+                <p>Subscribe to our newsletter for the latest updates, articles, and resources</p>
+                <form class="newsletter-form" id="newsletterForm">
+                    <div class="form-group">
+                        <input type="email" placeholder="Enter your email address" required>
+                        <button type="submit" class="btn">Subscribe</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials section-padding">
+        <div class="container">
+            <div class="section-title">
+                <h2>What Our Clients Say</h2>
+                <p>Hear from organizations and individuals who have benefited from our services</p>
+            </div>
+            <div class="testimonials-container">
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        Nigerland's training programs transformed our team's productivity and morale. The facilitators were knowledgeable and engaging.
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Client">
+                        </div>
+                        <div class="author-info">
+                            <h4>James Okon</h4>
+                            <p>HR Manager, Corporate Organization</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        The Generations book provided valuable insights into Nigeria's history. We've used it in our leadership training with great success.
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Client">
+                        </div>
+                        <div class="author-info">
+                            <h4>Amaka Eze</h4>
+                            <p>Education Director, State Ministry</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-text">
+                        Partnering with Nigerland Books Foundation has allowed us to reach thousands of children with educational materials and values-based learning.
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80" alt="Client">
+                        </div>
+                        <div class="author-info">
+                            <h4>Dr. Tunde Williams</h4>
+                            <p>NGO Director</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact section-padding" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contact Us</h2>
+                <p>Get in touch for more information about our services</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h3>Get In Touch</h3>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Email</h4>
+                                <p>contact@nigerlandconsult.com</p>
+                                <p>info@nigerlandconsult.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Phone</h4>
+                                <p>0803 3000 567</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Address</h4>
+                                <p>1, Elkanah Street, Mangoro, Lagos</p>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="full_name" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" class="form-control" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>NIGERLAND</h3>
+                    <p>Developing Men, Ideas & Solutions since 2000. We are committed to human capital development through training, publications, and social initiatives.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">Our Company</a></li>
+                        <li><a href="#books">Our Books</a></li>
+                        <li><a href="#training">Training Programmes</a></li>
+                        <li><a href="#conference">Tax Conference</a></li>
+                        <li><a href="#morelife">MoreLife Sessions</a></li>
+                        <li><a href="#foundation">Nigerland Books Foundation</a></li>
+                        <li><a href="#blog">Blog</a></li>
+                        <li><a href="#resources">Resources</a></li>
+                        <li><a href="#contact">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Our Services</h3>
+                    <ul class="footer-links">
+                        <li><a href="#books">Publications</a></li>
+                        <li><a href="#training">Training Programmes</a></li>
+                        <li><a href="#contact">Consultancy Services</a></li>
+                        <li><a href="#morelife">MoreLife Sessions</a></li>
+                        <li><a href="#foundation">Corporate Social Responsibility</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 1, Elkanah Street, Mangoro, Lagos</p>
+                    <p><i class="fas fa-envelope"></i> contact@nigerlandconsult.com</p>
+                    <p><i class="fas fa-phone"></i> 0803 3000 567</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Nigerland Consulting. All Rights Reserved. | Developed with <i class="fas fa-heart" style="color: #e74c3c;"></i> for a better society</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <a href="#home" class="back-to-top" id="backToTop">
+        <i class="fas fa-chevron-up"></i>
+    </a>
+
+    <!-- MoreLife JavaScript -->
+    <script>
+        // MoreLife Form Functions
+        let currentStep = 1;
+
+        function nextStep(step) {
+            // Validate current step before proceeding
+            if (step === 1) {
+                if (!validateStep1()) {
+                    showMorelifeAlert('Please complete all required fields in Step 1', 'error');
+                    return;
+                }
+            }
+            
+            document.getElementById('step' + step).classList.remove('active');
+            document.getElementById('step' + (step + 1)).classList.add('active');
+            currentStep = step + 1;
+            
+            // Update session payment when moving to step 2
+            if (step === 1) {
+                updateSessionPayment();
+            }
+        }
+
+        function prevStep(step) {
+            document.getElementById('step' + step).classList.remove('active');
+            document.getElementById('step' + (step - 1)).classList.add('active');
+            currentStep = step - 1;
+        }
+
+        function selectSession(sessionType, price) {
+            const sessionSelect = document.getElementById('session-type');
+            sessionSelect.value = sessionType;
+            updateSessionPayment();
+            
+            // Auto-scroll to form and move to step 2
+            document.getElementById('morelife-form').scrollIntoView({ behavior: 'smooth' });
+            
+            // If we're on step 1, move to step 2
+            if (currentStep === 1) {
+                nextStep(1);
+            }
+        }
+
+        // MoreLife Payment Functions
+        function updateSessionPayment() {
+            const sessionSelect = document.getElementById('session-type');
+            const selectedOption = sessionSelect.selectedOptions[0];
+            
+            if (selectedOption && selectedOption.dataset.price) {
+                const price = parseInt(selectedOption.dataset.price);
+                document.getElementById('sessionAmountDisplay').textContent = '₦' + price.toLocaleString();
+                document.getElementById('bankAmount').textContent = '₦' + price.toLocaleString();
+                document.getElementById('sessionTypeDisplay').textContent = selectedOption.textContent;
+            }
+        }
+
+        function togglePaymentMethod(method) {
+            const paystackInfo = document.getElementById('paystackInfo');
+            const bankInfo = document.getElementById('bankTransferInfo');
+            
+            if (method === 'paystack') {
+                paystackInfo.style.display = 'block';
+                bankInfo.style.display = 'none';
+            } else if (method === 'bank_transfer') {
+                paystackInfo.style.display = 'none';
+                bankInfo.style.display = 'block';
+            }
+        }
+
+        // MoreLife Form Submission
+        async function submitMorelifeForm(event) {
+            event.preventDefault();
+            
+            const submitButton = document.getElementById('submitMorelifeBtn');
+            const originalText = submitButton.innerHTML;
+            
+            // Show loading state
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+            submitButton.disabled = true;
+            document.getElementById('morelifeLoading').style.display = 'block';
+            
+            try {
+                // Validate that at least one challenge is selected
+                const selectedChallenges = Array.from(document.querySelectorAll('input[name="challenges[]"]:checked'))
+                    .map(checkbox => checkbox.value);
+                
+                if (selectedChallenges.length === 0) {
+                    throw new Error('Please select at least one challenge area');
+                }
+                
+                const formData = new FormData(document.getElementById('morelifeForm'));
+                
+                const morelifeData = {
+                    full_name: formData.get('full_name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    location: formData.get('location'),
+                    age: parseInt(formData.get('age')),
+                    education: formData.get('education'),
+                    challenges: selectedChallenges,
+                    other_challenge: formData.get('other_challenge'),
+                    cause: formData.get('cause'),
+                    duration: formData.get('duration'),
+                    incident: formData.get('incident'),
+                    medication: formData.get('medication'),
+                    start_month: formData.get('start_month'),
+                    session_type: formData.get('session_type'),
+                    session_price: parseInt(document.getElementById('session-type').selectedOptions[0]?.dataset.price || 0),
+                    payment_method: formData.get('payment_method')
+                };
+                
+                console.log('MoreLife submission data:', morelifeData);
+                
+                // Validate all required fields
+                const requiredFields = [
+                    'full_name', 'email', 'phone', 'location', 'age', 'education',
+                    'cause', 'duration', 'medication', 'start_month', 'session_type', 'payment_method'
+                ];
+                
+                const missingFields = requiredFields.filter(field => !morelifeData[field]);
+                if (missingFields.length > 0) {
+                    throw new Error(`Please fill in all required fields: ${missingFields.join(', ')}`);
+                }
+                
+                // Validate session price
+                if (morelifeData.session_price <= 0) {
+                    throw new Error('Please select a valid session type');
+                }
+                
+                const response = await fetch('Api/submit_morelife.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(morelifeData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('MoreLife response:', data);
+                
+                if (data.success) {
+                    showMorelifeAlert('Application submitted successfully!', 'success');
+                    
+                    if (morelifeData.payment_method === 'bank_transfer') {
+                        // Redirect to success page for bank transfer
+                        setTimeout(() => {
+                            window.location.href = `morelife-success.html?reference=${data.data.reference}&method=bank_transfer`;
+                        }, 2000);
+                    } else {
+                        // Process PayStack payment WITH VERIFICATION
+                        await processMorelifePayment(data.data.reference, morelifeData.email, morelifeData.session_price);
+                    }
+                } else {
+                    throw new Error(data.message || 'Submission failed');
+                }
+                
+            } catch (error) {
+                console.error('MoreLife submission error:', error);
+                showMorelifeAlert(`Submission failed: ${error.message}`, 'error');
+            } finally {
+                submitButton.innerHTML = originalText;
+                submitButton.disabled = false;
+                document.getElementById('morelifeLoading').style.display = 'none';
+            }
+        }
+
+        // Process MoreLife Payment
+        async function processMorelifePayment(reference, email, amount) {
+            try {
+                const paymentData = {
+                    reference: reference,
+                    email: email,
+                    amount: amount * 100, // Convert to kobo
+                    metadata: {
+                        type: 'morelife_session',
+                        session_type: document.getElementById('session-type').value
+                    }
+                };
+                
+                const response = await fetch('Api/initiate_payment.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(paymentData)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMorelifeAlert('Redirecting to secure payment gateway...', 'success');
+                    
+                    // Store reference for verification after payment
+                    localStorage.setItem('pendingMorelifePayment', reference);
+                    localStorage.setItem('morelifeSessionData', JSON.stringify({
+                        reference: reference,
+                        email: email,
+                        amount: amount
+                    }));
+                    
+                    // Redirect to PayStack
+                    setTimeout(() => {
+                        window.location.href = data.data.authorization_url;
+                    }, 2000);
+                    
+                } else {
+                    throw new Error(data.message || 'Payment initialization failed');
+                }
+                
+            } catch (error) {
+                console.error('Payment error:', error);
+                showMorelifeAlert(`Payment processing failed: ${error.message}`, 'error');
+            }
+        }
+
+        function showMorelifeAlert(message, type = 'error') {
+            const alert = document.getElementById('morelifeAlert');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.style.display = 'block';
+            
+            // Scroll to alert
+            alert.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            setTimeout(() => {
+                alert.style.display = 'none';
+            }, 5000);
+        }
+
+        // Form Validation Functions
+        function validateStep1() {
+            const requiredFields = [
+                'full_name', 'email', 'phone', 'location', 'age', 'education'
+            ];
+            
+            for (let field of requiredFields) {
+                const element = document.querySelector(`[name="${field}"]`);
+                if (!element || !element.value.trim()) {
+                    return false;
+                }
+            }
+            
+            // Check if at least one challenge is selected
+            const selectedChallenges = Array.from(document.querySelectorAll('input[name="challenges[]"]:checked'));
+            if (selectedChallenges.length === 0) {
+                return false;
+            }
+            
+            return true;
+        }
+
+        function validateStep2() {
+            const sessionType = document.getElementById('session-type').value;
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+            
+            if (!sessionType || !paymentMethod) {
+                return false;
+            }
+            
+            // Additional validation for step 2 fields
+            const requiredFields = ['cause', 'duration', 'medication', 'start_month'];
+            for (let field of requiredFields) {
+                const element = document.querySelector(`[name="${field}"]`);
+                if (!element || !element.value.trim()) {
+                    return false;
+                }
+            }
+            
+            return true;
+        }
+
+        // Multiselect functionality for challenges
+        function initializeMultiselect() {
+            const challengeDropdown = document.getElementById('challengeDropdown');
+            const challengeOptions = document.getElementById('challengeOptions');
+            const selectedText = document.getElementById('selectedText');
+            const selectedChallenges = document.getElementById('selectedChallenges');
+            const otherChallengeInput = document.getElementById('other_challenge');
+            
+            if (!challengeDropdown || !challengeOptions) {
+                console.error('Multiselect elements not found');
+                return;
+            }
+            
+            console.log('Initializing multiselect...');
+            
+            // Toggle dropdown on click
+            challengeDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+                challengeOptions.classList.toggle('active');
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!challengeDropdown.contains(e.target)) {
+                    challengeOptions.classList.remove('active');
+                }
+            });
+            
+            // Handle all checkbox changes
+            const checkboxes = challengeOptions.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    updateSelectedChallenges();
+                });
+            });
+            
+            // Handle "Other Challenges" input
+            if (otherChallengeInput) {
+                otherChallengeInput.addEventListener('input', function() {
+                    if (this.value.trim()) {
+                        // Automatically add "other" to challenges if not already present
+                        const otherCheckbox = document.querySelector('input[value="other"]');
+                        if (otherCheckbox && !otherCheckbox.checked) {
+                            otherCheckbox.checked = true;
+                            updateSelectedChallenges();
+                        }
+                    }
+                });
+            }
+            
+            // Initialize selected challenges display
+            updateSelectedChallenges();
+        }
+
+        function updateSelectedChallenges() {
+            const selected = Array.from(document.querySelectorAll('input[name="challenges[]"]:checked'))
+                .map(checkbox => checkbox.value);
+            const selectedText = document.getElementById('selectedText');
+            const selectedChallenges = document.getElementById('selectedChallenges');
+            const otherChallengeInput = document.getElementById('other_challenge');
+            
+            if (selected.length === 0) {
+                selectedText.textContent = 'Select one or more challenges';
+                selectedChallenges.innerHTML = '';
+            } else {
+                selectedText.textContent = selected.length + ' challenge(s) selected';
+                
+                // Update selected challenges display
+                const challengeTags = selected.map(challenge => {
+                    if (challenge === 'other' && otherChallengeInput && otherChallengeInput.value.trim()) {
+                        return `<div class="challenge-tag">Other: ${otherChallengeInput.value} <i class="fas fa-times" onclick="removeChallenge('other')"></i></div>`;
+                    } else {
+                        return `<div class="challenge-tag">${getChallengeDisplayName(challenge)} <i class="fas fa-times" onclick="removeChallenge('${challenge}')"></i></div>`;
+                    }
+                }).join('');
+                
+                selectedChallenges.innerHTML = challengeTags;
+            }
+        }
+
+        function getChallengeDisplayName(value) {
+            const names = {
+                'more_stress': 'More Stress',
+                'more_depression': 'More Depression',
+                'more_heart_ache': 'More Heart Ache',
+                'more_loneliness': 'More Loneliness',
+                'more_disappointments': 'More Disappointments',
+                'low_self_esteem': 'Low Self Esteem',
+                'low_self_confidence': 'Low Self Confidence',
+                'inferiority_complex': 'Inferiority Complex',
+                'fear': 'Fear',
+                'anxiety': 'Anxiety',
+                'low_productivity': 'Low Productivity',
+                'poor_creativity': 'Poor Creativity',
+                'other': 'Other'
+            };
+            return names[value] || value;
+        }
+
+        function removeChallenge(challenge) {
+            const checkbox = document.querySelector(`input[value="${challenge}"]`);
+            if (checkbox) {
+                checkbox.checked = false;
+                
+                // If removing "other", clear the other challenges input
+                if (challenge === 'other') {
+                    const otherChallengeInput = document.getElementById('other_challenge');
+                    if (otherChallengeInput) {
+                        otherChallengeInput.value = '';
+                    }
+                }
+                
+                updateSelectedChallenges();
+            }
+        }
+
+        // Real-time form validation
+        function setupFormValidation() {
+            const form = document.getElementById('morelifeForm');
+            if (!form) return;
+            
+            // Add input event listeners for real-time validation
+            const inputs = form.querySelectorAll('input, select, textarea');
+            inputs.forEach(input => {
+                input.addEventListener('input', validateCurrentStep);
+                input.addEventListener('change', validateCurrentStep);
+                input.addEventListener('blur', validateCurrentStep);
+            });
+            
+            // Validate payment method changes
+            document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+                radio.addEventListener('change', validateCurrentStep);
+            });
+            
+            // Validate session type changes
+            document.getElementById('session-type').addEventListener('change', function() {
+                updateSessionPayment();
+                validateCurrentStep();
+            });
+        }
+
+        function validateCurrentStep() {
+            const submitButton = document.getElementById('submitMorelifeBtn');
+            if (!submitButton) return;
+            
+            let isValid = false;
+            
+            if (currentStep === 1) {
+                isValid = validateStep1();
+            } else if (currentStep === 2) {
+                isValid = validateStep2();
+            }
+            
+            submitButton.disabled = !isValid;
+            return isValid;
+        }
+
+        // Check for pending payments when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            checkPendingPayments();
+        });
+
+        async function checkPendingPayments() {
+            const pendingPayment = localStorage.getItem('pendingMorelifePayment');
+            
+            if (pendingPayment) {
+                console.log('Found pending payment:', pendingPayment);
+                
+                try {
+                    // Verify the payment
+                    const response = await fetch(`Api/verify_morelife_payment.php?reference=${pendingPayment}`);
+                    const data = await response.json();
+                    
+                    if (data.success) {
+                        showMorelifeAlert('🎉 Payment Confirmed! Your MoreLife session is now active.', 'success');
+                        
+                        // Clear the stored payment reference
+                        localStorage.removeItem('pendingMorelifePayment');
+                        localStorage.removeItem('morelifeSessionData');
+                        
+                        // You could also update the UI to show confirmed status
+                        updateSessionStatus('confirmed');
+                        
+                    } else {
+                        console.log('Payment still pending or failed');
+                    }
+                    
+                } catch (error) {
+                    console.error('Payment verification error:', error);
+                }
+            }
+        }
+
+        function updateSessionStatus(status) {
+            // Update UI to show confirmed status
+            const statusElement = document.getElementById('sessionStatus');
+            if (statusElement) {
+                statusElement.textContent = status === 'confirmed' ? 'Confirmed ✅' : 'Pending';
+                statusElement.style.color = status === 'confirmed' ? 'green' : 'orange';
+            }
+        }
+
+        // Initialize everything when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize multiselect
+            initializeMultiselect();
+            
+            // Setup form validation
+            setupFormValidation();
+            
+            // Initialize session payment
+            updateSessionPayment();
+            
+            console.log('MoreLife form initialized successfully');
+        });
+    </script>
+
+    <script src="js/main.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/forms.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/blog.js"></script>
+    <script>
+        // Contact Form Handling
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const form = this;
+            const submitButton = form.querySelector('button[type="submit"]');
+            
+            // Get form data
+            const formData = new FormData(form);
+            const contactData = {
+                full_name: formData.get('full_name'),
+                email: formData.get('email'),
+                subject: formData.get('subject'),
+                message: formData.get('message')
+            };
+            
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            
+            try {
+                const response = await fetch('Api/contact_submit.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(contactData)
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('Thank you for your message! We will get back to you soon.');
+                    form.reset();
+                } else {
+                    throw new Error(data.message);
+                }
+                
+            } catch (error) {
+                console.error('Contact form error:', error);
+                alert('Failed to send message. Please try again.');
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Message';
+            }
+        });
+    </script>
+
+    <!-- Live Chat Widget -->
+    <div class="live-chat-widget">
+        <div class="chat-toggle" id="chatToggle">
+            <i class="fas fa-comments"></i>
+            <span class="chat-badge">1</span>
+        </div>
+        <div class="chat-window" id="chatWindow">
+            <div class="chat-header">
+                <h4>Nigerland Support</h4>
+                <button class="chat-close" id="chatClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-body">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        <div class="message-avatar">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="message-content">
+                            <p>Hello! I'm here to help you. How can I assist you today?</p>
+                            <span class="message-time" id="currentTime"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="chat-input">
+                    <input type="text" id="chatInput" placeholder="Type your message...">
+                    <button id="chatSend">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    // Live Chat Implementation
+    class LiveChat {
+        constructor() {
+            this.isOpen = false;
+            this.messages = [];
+            this.init();
+        }
+        
+        init() {
+            this.bindEvents();
+            this.updateTime();
+        }
+        
+        bindEvents() {
+            const chatToggle = document.getElementById('chatToggle');
+            const chatClose = document.getElementById('chatClose');
+            const chatSend = document.getElementById('chatSend');
+            const chatInput = document.getElementById('chatInput');
+            
+            if (chatToggle) chatToggle.addEventListener('click', () => this.toggleChat());
+            if (chatClose) chatClose.addEventListener('click', () => this.closeChat());
+            if (chatSend) chatSend.addEventListener('click', () => this.sendMessage());
+            if (chatInput) chatInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') this.sendMessage();
+            });
+        }
+        
+        toggleChat() {
+            this.isOpen = !this.isOpen;
+            const chatWindow = document.getElementById('chatWindow');
+            if (chatWindow) {
+                chatWindow.classList.toggle('active', this.isOpen);
+            }
+        }
+        
+        closeChat() {
+            this.isOpen = false;
+            const chatWindow = document.getElementById('chatWindow');
+            if (chatWindow) {
+                chatWindow.classList.remove('active');
+            }
+        }
+        
+        sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input?.value.trim();
+            
+            if (!message) return;
+            
+            this.addMessage(message, 'user');
+            if (input) input.value = '';
+            
+            // Simulate bot response
+            setTimeout(() => {
+                this.generateBotResponse(message);
+            }, 1000);
+        }
+        
+        addMessage(text, sender) {
+            const messagesContainer = document.getElementById('chatMessages');
+            if (!messagesContainer) return;
+            
+            const messageHTML = `
+                <div class="message ${sender}-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-${sender === 'user' ? 'user' : 'robot'}"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>${this.escapeHtml(text)}</p>
+                        <span class="message-time">${this.getCurrentTime()}</span>
+                    </div>
+                </div>
+            `;
+            
+            messagesContainer.insertAdjacentHTML('beforeend', messageHTML);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Store message
+            this.messages.push({ text, sender, time: new Date() });
+            this.saveChatHistory();
+        }
+        
+        generateBotResponse(userMessage) {
+            const responses = {
+                greeting: [
+                    "Hello! How can I help you with Nigerland's services today?",
+                    "Hi there! What can I assist you with?",
+                    "Welcome! How may I help you?"
+                ],
+                training: [
+                    "We offer various training programs in management, marketing, business administration, and more. Which area are you interested in?",
+                    "Our training programs are designed for professional development. Would you like to know about specific courses?",
+                    "We have comprehensive training in multiple fields. What type of training are you looking for?"
+                ],
+                conference: [
+                    "The Tax Conference is happening on December 9 & 10, 2025. Would you like registration details?",
+                    "Our upcoming conference focuses on tax reforms. I can help you with registration information.",
+                    "The conference provides insights into new tax laws. Interested in attending?"
+                ],
+                morelife: [
+                    "MoreLife sessions help with personal challenges like stress, depression, and anxiety. Would you like to know more?",
+                    "Our MoreLife program offers academic solutions to personal challenges. What specific area are you concerned about?",
+                    "MoreLife provides support for various personal challenges. How can I assist you with this?"
+                ],
+                ebook: [
+                    "We have several educational ebooks available. Which book are you interested in?",
+                    "Our ebook collection includes titles on various topics. What would you like to read about?",
+                    "We offer digital books on Nigerian history, personal development, and more. Any specific interest?"
+                ],
+                default: [
+                    "I understand you're asking about: " + userMessage + ". Could you provide more details so I can assist you better?",
+                    "Thank you for your question. Let me connect you with someone who can help with: " + userMessage,
+                    "I'd be happy to help with that. Could you tell me more about what you're looking for?"
+                ]
+            };
+            
+            const lowerMessage = userMessage.toLowerCase();
+            let responseType = 'default';
+            
+            if (/(hello|hi|hey|good morning|good afternoon)/i.test(lowerMessage)) {
+                responseType = 'greeting';
+            } else if (/(training|course|program|workshop)/i.test(lowerMessage)) {
+                responseType = 'training';
+            } else if (/(conference|tax|seminar|event)/i.test(lowerMessage)) {
+                responseType = 'conference';
+            } else if (/(morelife|session|challenge|stress|depression|anxiety)/i.test(lowerMessage)) {
+                responseType = 'morelife';
+            } else if (/(book|ebook|publication|read)/i.test(lowerMessage)) {
+                responseType = 'ebook';
+            }
+            
+            const possibleResponses = responses[responseType];
+            const response = possibleResponses[Math.floor(Math.random() * possibleResponses.length)];
+            
+            this.addMessage(response, 'bot');
+        }
+        
+        getCurrentTime() {
+            return new Date().toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit',
+                hour12: true 
+            });
+        }
+        
+        updateTime() {
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.textContent = this.getCurrentTime();
+            }
+        }
+        
+        escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+        
+        saveChatHistory() {
+            localStorage.setItem('nigerland_chat_history', JSON.stringify(this.messages));
+        }
+        
+        loadChatHistory() {
+            const saved = localStorage.getItem('nigerland_chat_history');
+            if (saved) {
+                this.messages = JSON.parse(saved);
+            }
+        }
+    }
+
+    // Initialize chat when DOM is loaded
+    document.addEventListener('DOMContentLoaded', () => {
+        new LiveChat();
+    });
+    </script>
+
+    <style>
+    /* Live Chat Styles */
+    .live-chat-widget {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 10000;
+    }
+
+    .chat-toggle {
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #1a5276, #2e86c1);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .chat-toggle:hover {
+        transform: scale(1.1);
+    }
+
+    .chat-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: #e74c3c;
+        color: white;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chat-window {
+        position: absolute;
+        bottom: 70px;
+        right: 0;
+        width: 350px;
+        height: 500px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    .chat-window.active {
+        display: flex;
+        animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .chat-header {
+        background: linear-gradient(135deg, #1a5276, #2e86c1);
+        color: white;
+        padding: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .chat-header h4 {
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .chat-close {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .chat-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-messages {
+        flex: 1;
+        padding: 20px;
+        overflow-y: auto;
+        background: #f8f9fa;
+    }
+
+    .message {
+        display: flex;
+        margin-bottom: 15px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .bot-message {
+        justify-content: flex-start;
+    }
+
+    .user-message {
+        justify-content: flex-end;
+    }
+
+    .message-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        background: #1a5276;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+        flex-shrink: 0;
+    }
+
+    .user-message .message-avatar {
+        background: #f39c12;
+        margin-right: 0;
+        margin-left: 10px;
+        order: 2;
+    }
+
+    .message-content {
+        max-width: 70%;
+        background: white;
+        padding: 12px 15px;
+        border-radius: 18px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .user-message .message-content {
+        background: #1a5276;
+        color: white;
+    }
+
+    .message-content p {
+        margin: 0 0 5px 0;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    .message-time {
+        font-size: 11px;
+        opacity: 0.7;
+    }
+
+    .chat-input {
+        padding: 15px;
+        border-top: 1px solid #e9ecef;
+        display: flex;
+        gap: 10px;
+    }
+
+    .chat-input input {
+        flex: 1;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 25px;
+        outline: none;
+        font-size: 14px;
+    }
+
+    .chat-input input:focus {
+        border-color: #1a5276;
+    }
+
+    .chat-input button {
+        width: 45px;
+        height: 45px;
+        background: #1a5276;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .chat-input button:hover {
+        background: #2e86c1;
+        transform: scale(1.05);
+    }
+
+    @media (max-width: 480px) {
+        .chat-window {
+            width: 300px;
+            right: -20px;
+        }
+    }
+    </style>
+
+   <script>
+// Debug and fix multiselect dropdown
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('=== MULTISELECT DEBUG ===');
+    
+    const dropdown = document.getElementById('challengeDropdown');
+    const options = document.getElementById('challengeOptions');
+    
+    console.log('Dropdown element:', dropdown);
+    console.log('Options element:', options);
+    
+    if (!dropdown || !options) {
+        console.error('Multiselect elements not found!');
+        return;
+    }
+    
+    // Force override any inline styles that might be hiding the dropdown
+    options.style.cssText = `
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        width: 100% !important;
+        background: white !important;
+        border: 2px solid #1a5276 !important;
+        border-radius: 8px !important;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+        max-height: 300px !important;
+        overflow-y: auto !important;
+        z-index: 1001 !important;
+        margin-top: 5px !important;
+        display: none !important;
+    `;
+    
+    // Enhanced click handler
+    dropdown.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Dropdown clicked');
+        
+        const isActive = options.classList.contains('active');
+        console.log('Currently active:', isActive);
+        
+        // Close all other dropdowns
+        document.querySelectorAll('.multiselect-options').forEach(opt => {
+            if (opt !== options) {
+                opt.classList.remove('active');
+            }
+        });
+        
+        // Toggle this dropdown
+        options.classList.toggle('active');
+        
+        if (options.classList.contains('active')) {
+            options.style.display = 'block';
+            console.log('Dropdown shown');
+        } else {
+            options.style.display = 'none';
+            console.log('Dropdown hidden');
+        }
+    });
+    
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!dropdown.contains(e.target)) {
+            options.classList.remove('active');
+            options.style.display = 'none';
+        }
+    });
+    
+    // Handle option clicks
+    options.addEventListener('click', function(e) {
+        const target = e.target;
+        console.log('Options area clicked:', target);
+        
+        // Handle checkbox click
+        if (target.type === 'checkbox') {
+            updateSelectedChallenges();
+        }
+        
+        // Handle label click
+        if (target.tagName === 'LABEL') {
+            const checkbox = target.previousElementSibling;
+            if (checkbox && checkbox.type === 'checkbox') {
+                checkbox.checked = !checkbox.checked;
+                updateSelectedChallenges();
+            }
+        }
+        
+        // Handle option div click
+        if (target.classList.contains('multiselect-option')) {
+            const checkbox = target.querySelector('input[type="checkbox"]');
+            if (checkbox) {
+                checkbox.checked = !checkbox.checked;
+                updateSelectedChallenges();
+            }
+        }
+    });
+    
+    console.log('Multiselect initialized successfully');
+});
+
+// Make sure updateSelectedChallenges function exists
+if (typeof updateSelectedChallenges === 'undefined') {
+    function updateSelectedChallenges() {
+        const selected = Array.from(document.querySelectorAll('input[name="challenges[]"]:checked'))
+            .map(checkbox => checkbox.value);
+        const selectedText = document.getElementById('selectedText');
+        const selectedChallenges = document.getElementById('selectedChallenges');
+        const otherChallengeInput = document.getElementById('other_challenge');
+        
+        if (selected.length === 0) {
+            selectedText.textContent = 'Select one or more challenges';
+            selectedChallenges.innerHTML = '';
+        } else {
+            selectedText.textContent = selected.length + ' challenge(s) selected';
+            
+            const challengeTags = selected.map(challenge => {
+                if (challenge === 'other' && otherChallengeInput && otherChallengeInput.value.trim()) {
+                    return `<div class="challenge-tag">Other: ${otherChallengeInput.value} <i class="fas fa-times" onclick="removeChallenge('other')"></i></div>`;
+                } else {
+                    const displayName = getChallengeDisplayName(challenge);
+                    return `<div class="challenge-tag">${displayName} <i class="fas fa-times" onclick="removeChallenge('${challenge}')"></i></div>`;
+                }
+            }).join('');
+            
+            selectedChallenges.innerHTML = challengeTags;
+        }
+    }
+}
+
+if (typeof getChallengeDisplayName === 'undefined') {
+    function getChallengeDisplayName(value) {
+        const names = {
+            'more_stress': 'More Stress',
+            'more_depression': 'More Depression',
+            'more_heart_ache': 'More Heart Ache',
+            'more_loneliness': 'More Loneliness',
+            'more_disappointments': 'More Disappointments',
+            'low_self_esteem': 'Low Self Esteem',
+            'low_self_confidence': 'Low Self Confidence',
+            'inferiority_complex': 'Inferiority Complex',
+            'fear': 'Fear',
+            'anxiety': 'Anxiety',
+            'low_productivity': 'Low Productivity',
+            'poor_creativity': 'Poor Creativity',
+            'other': 'Other'
+        };
+        return names[value] || value;
+    }
+}
+
+if (typeof removeChallenge === 'undefined') {
+    function removeChallenge(challenge) {
+        const checkbox = document.querySelector(`input[value="${challenge}"]`);
+        if (checkbox) {
+            checkbox.checked = false;
+            
+            if (challenge === 'other') {
+                const otherChallengeInput = document.getElementById('other_challenge');
+                if (otherChallengeInput) {
+                    otherChallengeInput.value = '';
+                }
+            }
+            
+            updateSelectedChallenges();
+        }
+    }
+}
+
+// Newsletter Subscription
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletterForm');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const emailInput = newsletterForm.querySelector('input[type="email"]');
+            const submitButton = newsletterForm.querySelector('button[type="submit"]');
+            const email = emailInput.value.trim();
+            
+            if (!email) {
+                alert('Please enter your email address');
+                return;
+            }
+            
+            // Disable button and show loading
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Subscribing...';
+            submitButton.disabled = true;
+            
+            try {
+                const response = await fetch('Api/subscribe_newsletter.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: email })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    alert('✅ ' + data.message);
+                    emailInput.value = '';
+                } else {
+                    throw new Error(data.message || 'Subscription failed');
+                }
+            } catch (error) {
+                console.error('Newsletter subscription error:', error);
+                alert('❌ Subscription failed: ' + error.message);
+            } finally {
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+            }
+        });
+    }
+});
+</script>
+</body>
+</html>
