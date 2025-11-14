@@ -1,8 +1,20 @@
 <?php
-require_once 'paystack_config.php';
-require_once 'config/database.php';
+/**
+ * Payment Initiation API - FIXED
+ */
+
+require_once __DIR__ . '/paystack_config.php';
+require_once __DIR__ . '/config/database.php';
 
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
@@ -25,13 +37,17 @@ try {
     
     // Validate required fields
     if (empty($email) || empty($amount) || empty($full_name)) {
-        throw new Exception('Missing required fields');
+        throw new Exception('Missing required fields: email, amount, or full_name');
     }
     
     // Generate unique reference
     $registration_reference = 'CONF-' . strtoupper(uniqid());
     
-    // Save registration to database first
+    // Clean amount (remove commas and convert to integer)
+    $clean_amount = preg_replace('/[^0-9]/', '', $amount);
+    $clean_amount = intval($clean_amount);
+    
+    // Save registration to database
     $stmt = $pdo->prepare("
         INSERT INTO conference_registrations 
         (reference, full_name, email, phone, profession, organization, payment_method, amount, conference_id, conference_title, conference_date, status, created_at) 
@@ -46,13 +62,13 @@ try {
         $profession,
         $organization,
         $payment_method,
-        $amount,
+        $clean_amount,
         $conference_id,
         $conference_title,
         $conference_date
     ]);
     
-    // If bank transfer, return success
+    // If bank transfer
     if ($payment_method === 'bank_transfer' || $payment_method === 'bank-transfer') {
         echo json_encode([
             'success' => true,
@@ -63,19 +79,14 @@ try {
         exit;
     }
     
-    // For Paystack payment, initialize transaction
+    // Paystack payment initialization
     $url = PayStackConfig::BASE_URL . '/transaction/initialize';
     
-    // Get the base URL dynamically
     $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
     $base_url = $protocol . '://' . $_SERVER['HTTP_HOST'];
     
-    // Paystack requires amount in kobo (smallest currency unit)
-    // So ₦1,500 = 150,000 kobo
-    // Remove commas from amount e.g. "146,000" → "146000"
-$clean_amount = preg_replace('/[^0-9]/', '', $amount);
-$amount_in_kobo = intval($clean_amount) * 100;
-
+    // Convert to kobo
+    $amount_in_kobo = $clean_amount * 100;
     
     $fields = [
         'email' => $email,
@@ -98,8 +109,6 @@ $amount_in_kobo = intval($clean_amount) * 100;
         ]
     ];
     
-    error_log("PayStack request: " . json_encode($fields));
-    
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -117,15 +126,13 @@ $amount_in_kobo = intval($clean_amount) * 100;
     $result = json_decode($result, true);
     
     if ($httpcode === 200 && $result['status']) {
-        // Update registration with PayStack reference
+        // Update with paystack reference
         $stmt = $pdo->prepare("
             UPDATE conference_registrations 
             SET paystack_reference = ?, payment_gateway = 'paystack' 
             WHERE reference = ?
         ");
         $stmt->execute([$registration_reference, $registration_reference]);
-        
-        error_log("Payment initialized successfully: " . $result['data']['authorization_url']);
         
         echo json_encode([
             "success" => true,
@@ -135,15 +142,15 @@ $amount_in_kobo = intval($clean_amount) * 100;
         ]);
     } else {
         $error_message = $result['message'] ?? 'Payment initialization failed';
-        error_log("PayStack error: " . json_encode($result));
         throw new Exception($error_message);
     }
     
 } catch (Exception $e) {
     error_log('Payment initiation error: ' . $e->getMessage());
+    http_response_code(500);
     echo json_encode([
         'success' => false,
-        'message' => 'Payment initiation failed: ' . $e->getMessage()
+        'message' => $e->getMessage()
     ]);
 }
 ?>

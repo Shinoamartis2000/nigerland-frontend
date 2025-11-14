@@ -1,4 +1,8 @@
 <?php
+/**
+ * Newsletter Subscription API - FIXED
+ */
+
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
@@ -10,9 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once __DIR__ . '/config/database.php';
-
-$database = new Database();
-$pdo = $database->getConnection();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -37,43 +38,47 @@ try {
         exit();
     }
 
-    // CHECK EXISTING SUBSCRIBER
-    $check = $db->prepare("SELECT id, status FROM newsletter_subscribers WHERE email = ?");
+    // Check if email already exists
+    $check = $pdo->prepare("SELECT id, status FROM newsletter_subscribers WHERE email = ?");
     $check->execute([$email]);
     $existing = $check->fetch(PDO::FETCH_ASSOC);
 
     if ($existing) {
         if ($existing['status'] === 'active') {
-            echo json_encode(['success' => true, 'message' => 'You are already subscribed']);
+            echo json_encode(['success' => true, 'message' => 'You are already subscribed to our newsletter']);
             exit();
         }
 
-        $update = $db->prepare("UPDATE newsletter_subscribers SET status='active', subscribed_at=NOW() WHERE email=?");
+        // Reactivate
+        $update = $pdo->prepare("UPDATE newsletter_subscribers SET status='active', subscribed_at=NOW() WHERE email=?");
         $update->execute([$email]);
 
-        echo json_encode(['success' => true, 'message' => 'Subscription reactivated']);
+        echo json_encode(['success' => true, 'message' => 'Your subscription has been reactivated']);
         exit();
     }
 
-    // INSERT NEW
-    $insert = $db->prepare("
+    // Insert new subscriber
+    $insert = $pdo->prepare("
         INSERT INTO newsletter_subscribers (email, status, source, subscribed_at)
         VALUES (?, 'active', 'website', NOW())
     ");
 
     if ($insert->execute([$email])) {
+        http_response_code(201);
         echo json_encode([
             'success' => true,
-            'message' => 'Subscription successful!',
-            'data' => ['email' => $email]
+            'message' => 'Thank you for subscribing! You will receive updates from Nigerland Consult.'
         ]);
     } else {
-        throw new Exception('Database insert failed');
+        throw new Exception('Failed to save subscription');
     }
 
 } catch (Exception $e) {
     error_log('Newsletter error: ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Server error']);
+    echo json_encode([
+        'success' => false,
+        'message' => 'Subscription failed. Please try again.'
+    ]);
 }
 ?>
