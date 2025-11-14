@@ -46,6 +46,7 @@ try {
         $payment_method
     ]);
     
+    
     // If bank transfer, return success
     if ($payment_method === 'bank_transfer' || $payment_method === 'bank-transfer') {
         echo json_encode([

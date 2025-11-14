@@ -72,7 +72,10 @@ try {
     
     // Paystack requires amount in kobo (smallest currency unit)
     // So ₦1,500 = 150,000 kobo
-    $amount_in_kobo = $amount * 100;
+    // Remove commas from amount e.g. "146,000" → "146000"
+$clean_amount = preg_replace('/[^0-9]/', '', $amount);
+$amount_in_kobo = intval($clean_amount) * 100;
+
     
     $fields = [
         'email' => $email,
