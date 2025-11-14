@@ -751,7 +751,7 @@
                     
                     if (paymentMethod === 'bank_transfer') {
                         setTimeout(() => {
-                            window.location.href = `purchase-success.html?reference=${data.data.reference}&method=bank_transfer&type=ebook`;
+                            window.location.href = `payment-success.html?reference=${data.data.reference}&method=bank_transfer&type=ebook`;
                         }, 2000);
                     } else {
                         await processEbookPayment(data.data.reference, email, selectedEbook.price);

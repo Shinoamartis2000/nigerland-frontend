@@ -7,3 +7,12 @@ RewriteRule ^api/(.*)$ api/$1 [L]
 Header always set Access-Control-Allow-Origin "*"
 Header always set Access-Control-Allow-Methods "GET, POST, OPTIONS"
 Header always set Access-Control-Allow-Headers "Content-Type, Authorization"
+
+
+RewriteBase /
+
+# Allow API files
+RewriteRule ^Api/(.*)$ Api/$1 [L]
+
+# Handle PHP directly
+AddType application/x-httpd-php .php

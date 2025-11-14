@@ -16,7 +16,7 @@ try {
     }
     
     // Verify with PayStack API
-    $paystack_secret = 'your_paystack_secret_key_here';
+    $paystack_secret = 'sk_live_3e2f1dbe73eb802d47eddf745674942e05ddc8dc';
     $curl = curl_init();
     
     curl_setopt_array($curl, array(
